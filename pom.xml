@@ -19,7 +19,7 @@
     <description>ddd-sample-cargotracker</description>
 
     <modules>
-        <module>cargotracker-service</module>
+        <module>cargotracker</module>
     </modules>
 
     <properties>

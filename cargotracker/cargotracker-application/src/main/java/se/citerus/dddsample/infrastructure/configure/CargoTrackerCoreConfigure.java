@@ -59,8 +59,6 @@ class CargoTrackerCoreConfigure {
             .deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(properties.getDatetimeFormat())))
             .deserializerByType(YearMonth.class, new YearMonthDeserializer(DateTimeFormatter.ofPattern(properties.getYearMonthFormat())))
 
-//                .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
-
             .timeZone(properties.getTimeZone())
             .featuresToDisable(
                 SerializationFeature.FAIL_ON_EMPTY_BEANS,
@@ -84,7 +82,6 @@ class CargoTrackerCoreConfigure {
                     .enable(Hibernate6Module.Feature.FORCE_LAZY_LOADING)
             );
     }
-
 
     @Bean
     public GroupedOpenApi restApi() {
