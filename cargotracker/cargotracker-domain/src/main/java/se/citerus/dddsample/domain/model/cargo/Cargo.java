@@ -1,5 +1,6 @@
 package se.citerus.dddsample.domain.model.cargo;
 
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.*;
 import org.apache.commons.collections4.CollectionUtils;
@@ -29,20 +30,24 @@ public class Cargo extends AbstractEntity implements DomainEntity<Cargo> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Nonnull
     @Column(name = "tracking_id", unique = true)
     private String trackingId;
 
+    @Nonnull
     @Embedded
     private RouteSpecification routeSpecification;
 
+    @Nonnull
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "cargo_id")
     private List<Leg> legs;
 
+    @Nonnull
     @Embedded
     private Delivery delivery;
 
-    private Cargo(TrackingId trackingId, RouteSpecification routeSpecification, Itinerary itinerary) {
+    private Cargo(@NonNull TrackingId trackingId,@NonNull RouteSpecification routeSpecification,@NonNull Itinerary itinerary) {
         Validate.notNull(trackingId, "trackingId is required");
         Validate.notNull(routeSpecification, "Route specification is required");
         this.trackingId = trackingId.getId();

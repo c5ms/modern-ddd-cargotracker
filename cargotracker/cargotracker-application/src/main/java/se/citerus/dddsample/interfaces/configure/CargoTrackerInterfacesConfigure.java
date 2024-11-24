@@ -11,7 +11,7 @@ import org.springdoc.core.utils.SpringDocUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import se.citerus.dddsample.application.configure.CargoTrackerApplicationProperties;
+import se.citerus.dddsample.infrastructure.configure.CargoTrackerInfrastructureProperties;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,7 +25,6 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 class CargoTrackerInterfacesConfigure {
 
-    private final CargoTrackerApplicationProperties cargoTrackerApplicationProperties;
     private final CargoTrackerInterfacesProperties cargoTrackerInterfacesProperties;
 
     @Bean
@@ -38,8 +37,8 @@ class CargoTrackerInterfacesConfigure {
     }
 
     @Bean
-    public OpenAPI openAPI() {
-        var jsonProperties = cargoTrackerApplicationProperties.getJson();
+    public OpenAPI openAPI(CargoTrackerInfrastructureProperties infrastructureProperties) {
+        var jsonProperties = infrastructureProperties.getJson();
 
 
         SpringDocUtils.getConfig().replaceWithSchema(LocalDate.class, new Schema<LocalDate>()

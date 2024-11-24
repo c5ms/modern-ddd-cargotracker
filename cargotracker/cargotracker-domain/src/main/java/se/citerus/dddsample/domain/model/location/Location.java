@@ -30,13 +30,9 @@ public class Location implements DomainEntity<Location> {
     @Column(nullable = false)
     private String name;
 
-    protected Location(String unlocode, String name) {
+    private Location(String unlocode, String name) {
         this.unlocode = unlocode;
         this.name = name;
-    }
-
-    public static Location unknown() {
-        return new Location("XXXXX", "Unknown location");
     }
 
     /**
@@ -46,12 +42,20 @@ public class Location implements DomainEntity<Location> {
      * @param name     location name
      * @throws IllegalArgumentException if the UN Locode or name is null
      */
-    public Location(final UnLocode unLocode, final String name) {
+    private Location(final UnLocode unLocode, final String name) {
         Validate.notNull(unLocode, "unLocode can not be null");
         Validate.notNull(name, "name can not be null");
 
         this.unlocode = unLocode.idString();
         this.name = name;
+    }
+
+    public static Location of(final UnLocode unLocode, final String name) {
+        return new Location(unLocode, name);
+    }
+
+    public static Location unknown() {
+        return new Location("XXXXX", "Unknown location");
     }
 
 

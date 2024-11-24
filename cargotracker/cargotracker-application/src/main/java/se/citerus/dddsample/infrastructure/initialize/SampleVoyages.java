@@ -20,7 +20,7 @@ import static se.citerus.dddsample.infrastructure.initialize.SampleLocations.*;
 /**
  * Sample carrier movements, for test purposes.
  */
-class SampleVoyages {
+public class SampleVoyages {
 
     public static final Voyage CM001 = createVoyage("CM001", STOCKHOLM, HAMBURG);
     public static final Voyage CM002 = createVoyage("CM002", HAMBURG, HONGKONG);
