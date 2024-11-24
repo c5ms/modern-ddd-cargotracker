@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import se.citerus.dddsample.domain.model.location.UnLocode;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @Schema(name = "CargoAssignRouteRequest")
 public class CargoAssignRouteRequest {
 
@@ -22,6 +24,7 @@ public class CargoAssignRouteRequest {
     @Hidden
     @Getter
     @Setter
+    @Accessors(chain = true)
     public static class Leg {
 
         @Schema(example = "0200T")

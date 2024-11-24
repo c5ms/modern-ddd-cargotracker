@@ -23,7 +23,7 @@ public class ReportResource {
 
     @Operation(summary = "receive handing event reports")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PutMapping(value = "/reports")
+    @PostMapping
     public void receiveReport(@Validated @RequestBody HandlingReportDto report) {
         var command = handlingConvertor.toReport(report);
         handlingReportReceiver.receiveHandlingReport(command);

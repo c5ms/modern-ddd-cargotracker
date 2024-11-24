@@ -5,10 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import se.citerus.dddsample.domain.model.location.UnLocode;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @Schema(name = "CargoDestinationChangeRequest")
 public class CargoDestinationChangeRequest {
 

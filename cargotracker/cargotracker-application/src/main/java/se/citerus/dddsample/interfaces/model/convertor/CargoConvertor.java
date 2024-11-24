@@ -73,28 +73,6 @@ public class CargoConvertor {
             ;
     }
 
-    public DeliveryDto toDto(Delivery delivery) {
-        return new DeliveryDto()
-            .setEta(delivery.getEta())
-            .setCalculatedAt(delivery.getCalculatedAt())
-            .setMisdirected(delivery.isMisdirected())
-            .setCurrentVoyageNumber(delivery.getCurrentVoyage().map(Voyage::getVoyageNumber).orElse(null))
-            .setLastKnownLocation(delivery.getLastKnownLocation())
-            .setRoutingStatus(delivery.getRoutingStatus())
-            .setNextExpectedActivity(delivery.getNextExpectedActivity())
-            ;
-    }
-
-    public LegDto toDto(Leg leg) {
-        return new LegDto()
-            .setVoyageNumber(leg.voyage().getVoyageNumber())
-            .setFrom(leg.getLoadLocation().getUnlocode())
-            .setTo(leg.getUnloadLocation().getUnlocode())
-            .setUnloadTime(leg.unloadTime())
-            .setLoadTime(leg.loadTime())
-            ;
-    }
-
     public LocationDto toDto(Location origin) {
         return new LocationDto()
             .setUnlocode(origin.getUnlocode())
