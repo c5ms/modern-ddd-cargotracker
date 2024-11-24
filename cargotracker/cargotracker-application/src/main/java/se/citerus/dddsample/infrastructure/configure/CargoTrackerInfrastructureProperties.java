@@ -9,6 +9,26 @@ import java.util.TimeZone;
 @ConfigurationProperties(prefix = "cargotracker.infrastructure")
 public class CargoTrackerInfrastructureProperties {
 
-    private boolean initializeSample = false;
+    private final Json json = new Json();
+
+    private final Sample sample = new Sample();
+
+    @Data
+    public static class Sample {
+        private boolean initializeSampleData = false;
+    }
+
+    @Data
+    public static class Json {
+        private String yearMonthFormat = "yyyy-MM";
+
+        private String dateFormat = "yyyy-MM-dd";
+
+        private String timeFormat = "HH:mm:ss";
+
+        private String datetimeFormat = dateFormat + " " + timeFormat;
+
+        private TimeZone timeZone = TimeZone.getDefault();
+    }
 
 }

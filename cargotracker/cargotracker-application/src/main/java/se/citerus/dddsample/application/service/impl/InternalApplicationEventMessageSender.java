@@ -13,7 +13,7 @@ import se.citerus.dddsample.application.shared.ApplicationEvent;
 @ConditionalOnMissingBean(ApplicationEventMessageSender.class)
 public class InternalApplicationEventMessageSender implements ApplicationEventMessageSender {
 
-    private final  ApplicationEventPublisher publisher;
+    private final ApplicationEventPublisher publisher;
 
     @Override
     public void send(ApplicationEvent event) {

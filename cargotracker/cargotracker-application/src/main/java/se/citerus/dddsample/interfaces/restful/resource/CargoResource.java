@@ -16,7 +16,7 @@ import se.citerus.dddsample.domain.model.cargo.UnknownCargoException;
 import se.citerus.dddsample.interfaces.model.convertor.CargoConvertor;
 import se.citerus.dddsample.interfaces.model.dto.CargoDto;
 import se.citerus.dddsample.interfaces.model.request.CargoAssignRouteRequest;
-import se.citerus.dddsample.interfaces.model.request.CargoChangeDestinationRequest;
+import se.citerus.dddsample.interfaces.model.request.CargoDestinationChangeRequest;
 import se.citerus.dddsample.interfaces.model.request.CargoRegisterRequest;
 
 import java.util.List;
@@ -80,7 +80,7 @@ public class CargoResource {
     @ApiResponse(responseCode = "404", description = "cargo not found")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/{trackingId}/destination")
-    public CargoDto changeDestination(@PathVariable("trackingId") TrackingId trackingId, @Validated @RequestBody CargoChangeDestinationRequest request) {
+    public CargoDto changeDestination(@PathVariable("trackingId") TrackingId trackingId, @Validated @RequestBody CargoDestinationChangeRequest request) {
         var command = cargoConvertor.toCommand(request);
         bookingService.changeDestination(trackingId, command);
         var cargo = cargoFinder.require(trackingId);

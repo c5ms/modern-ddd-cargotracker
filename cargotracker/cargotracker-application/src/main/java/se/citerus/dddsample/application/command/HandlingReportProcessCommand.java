@@ -9,8 +9,8 @@ import se.citerus.dddsample.domain.model.handling.HandlingReport;
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class HandlingReportProcessCommand  {
+public class HandlingReportProcessCommand {
 
     private final HandlingReport report;
-    
+
 }

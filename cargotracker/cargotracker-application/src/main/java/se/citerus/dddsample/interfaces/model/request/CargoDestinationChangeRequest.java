@@ -9,10 +9,12 @@ import se.citerus.dddsample.domain.model.location.UnLocode;
 
 @Getter
 @Setter
-@Schema(name = "CargoChangeDestinationRequest")
-public class CargoChangeDestinationRequest {
+@Schema(name = "CargoDestinationChangeRequest")
+public class CargoDestinationChangeRequest {
+
     @NotNull
     @Pattern(regexp = UnLocode.UN_LOCODE_REGEX)
     @Schema(example = "FIHEL")
     private String destination;
+
 }

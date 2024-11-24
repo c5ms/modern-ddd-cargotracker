@@ -8,6 +8,6 @@ import se.citerus.dddsample.domain.model.location.UnLocode;
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class CargoChangeDestinationCommand {
+public class CargoDestinationChangeCommand {
     private final UnLocode destination;
 }

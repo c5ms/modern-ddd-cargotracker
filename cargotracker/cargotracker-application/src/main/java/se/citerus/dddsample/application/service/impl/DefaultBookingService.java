@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import se.citerus.dddsample.application.service.BookingService;
 import se.citerus.dddsample.application.command.CargoAssignRouteCommand;
-import se.citerus.dddsample.application.command.CargoChangeDestinationCommand;
+import se.citerus.dddsample.application.command.CargoDestinationChangeCommand;
 import se.citerus.dddsample.application.command.CargoRegisterCommand;
+import se.citerus.dddsample.application.service.BookingService;
 import se.citerus.dddsample.domain.model.cargo.*;
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.model.location.LocationFinder;
@@ -47,7 +47,7 @@ public class DefaultBookingService implements BookingService {
     }
 
     @Override
-    public void changeDestination(TrackingId trackingId, CargoChangeDestinationCommand command) {
+    public void changeDestination(TrackingId trackingId, CargoDestinationChangeCommand command) {
         final Cargo cargo = cargoFinder.require(trackingId);
         final Location destination = locationFinder.require(command.getDestination());
         cargo.changeDestination(destination);

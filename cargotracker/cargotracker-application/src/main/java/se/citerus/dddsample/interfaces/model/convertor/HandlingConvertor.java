@@ -3,9 +3,9 @@ package se.citerus.dddsample.interfaces.model.convertor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import se.citerus.dddsample.application.command.HandlingReportReceiveCommand;
-import se.citerus.dddsample.domain.model.handling.HandlingReport;
 import se.citerus.dddsample.domain.model.cargo.TrackingId;
 import se.citerus.dddsample.domain.model.handling.HandlingEvent;
+import se.citerus.dddsample.domain.model.handling.HandlingReport;
 import se.citerus.dddsample.domain.model.location.UnLocode;
 import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 import se.citerus.dddsample.interfaces.model.dto.HandlingReportDto;
@@ -33,13 +33,13 @@ public class HandlingConvertor {
             .voyageNumber(voyageNumber)
             .type(type)
             .unLocode(unLocode);
-         var reports= trackingIds.stream()
+        var reports = trackingIds.stream()
             .map(builder::trackingId)
             .map(HandlingReport.HandlingReportBuilder::build)
             .toList();
-         return HandlingReportReceiveCommand.builder()
-             .reports(reports)
-             .build();
+        return HandlingReportReceiveCommand.builder()
+            .reports(reports)
+            .build();
 
     }
 }

@@ -35,7 +35,7 @@ public class JmsApplicationEventMessageSender implements ApplicationEventMessage
             return;
         }
 
-        log.error("unsupported event type: {}",  event.getClass().getName());
+        log.error("unsupported event type: {}", event.getClass().getName());
     }
 
 }

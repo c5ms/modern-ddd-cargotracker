@@ -22,7 +22,7 @@ public class CargoAssignRouteRequest {
     @Hidden
     @Getter
     @Setter
-    public  static  class Leg{
+    public static class Leg {
 
         @Schema(example = "0200T")
         private String voyageNumber;

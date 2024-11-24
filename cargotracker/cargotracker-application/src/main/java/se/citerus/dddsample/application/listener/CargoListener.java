@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import se.citerus.dddsample.application.events.CargoArrivedEvent;
 import se.citerus.dddsample.application.events.CargoHandledEvent;
 import se.citerus.dddsample.application.events.CargoMisdirectedEvent;
-import se.citerus.dddsample.application.service.BookingService;
 import se.citerus.dddsample.application.service.CargoInspector;
 import se.citerus.dddsample.domain.model.cargo.TrackingId;
 import se.citerus.dddsample.domain.shared.DomainEvent;

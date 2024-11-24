@@ -3,7 +3,7 @@ package se.citerus.dddsample.interfaces.model.convertor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import se.citerus.dddsample.application.command.CargoAssignRouteCommand;
-import se.citerus.dddsample.application.command.CargoChangeDestinationCommand;
+import se.citerus.dddsample.application.command.CargoDestinationChangeCommand;
 import se.citerus.dddsample.application.command.CargoRegisterCommand;
 import se.citerus.dddsample.domain.model.cargo.Cargo;
 import se.citerus.dddsample.domain.model.cargo.Delivery;
@@ -20,7 +20,7 @@ import se.citerus.dddsample.interfaces.model.dto.DeliveryDto;
 import se.citerus.dddsample.interfaces.model.dto.LegDto;
 import se.citerus.dddsample.interfaces.model.dto.LocationDto;
 import se.citerus.dddsample.interfaces.model.request.CargoAssignRouteRequest;
-import se.citerus.dddsample.interfaces.model.request.CargoChangeDestinationRequest;
+import se.citerus.dddsample.interfaces.model.request.CargoDestinationChangeRequest;
 import se.citerus.dddsample.interfaces.model.request.CargoRegisterRequest;
 
 import java.time.Instant;
@@ -47,8 +47,8 @@ public class CargoConvertor {
             .build();
     }
 
-    public CargoChangeDestinationCommand toCommand(CargoChangeDestinationRequest request) {
-        return CargoChangeDestinationCommand.builder()
+    public CargoDestinationChangeCommand toCommand(CargoDestinationChangeRequest request) {
+        return CargoDestinationChangeCommand.builder()
             .destination(UnLocode.of(request.getDestination()))
             .build();
     }

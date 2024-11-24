@@ -7,7 +7,6 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.List;
 
 @Getter
 @Setter
