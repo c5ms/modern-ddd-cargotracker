@@ -9,11 +9,13 @@ import se.citerus.dddsample.domain.model.cargo.TrackingId;
 /**
  * Cargo booking service.
  */
-public interface BookingService {
+public interface CargoService {
 
   Cargo book(CargoRegisterCommand command);
 
   void assignRoute(TrackingId trackingId, CargoAssignRouteCommand command);
 
   void changeDestination(TrackingId trackingId, CargoChangeDestinationCommand command);
+
+  void inspectCargo(TrackingId trackingId);
 }

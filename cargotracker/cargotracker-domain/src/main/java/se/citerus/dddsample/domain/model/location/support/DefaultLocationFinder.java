@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import se.citerus.dddsample.domain.model.location.*;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -13,6 +15,11 @@ import java.util.Optional;
 public class DefaultLocationFinder implements LocationFinder {
 
     private final LocationRepository locationRepository;
+
+    @Override
+    public Collection<Location> listAll() {
+        return locationRepository.findAll();
+    }
 
     @Override
     public Optional<Location> find(UnLocode unLocode) {

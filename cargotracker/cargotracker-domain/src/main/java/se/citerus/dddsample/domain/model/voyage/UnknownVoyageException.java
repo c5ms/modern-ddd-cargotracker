@@ -1,7 +1,5 @@
 package se.citerus.dddsample.domain.model.voyage;
 
-import se.citerus.dddsample.domain.model.handling.CannotCreateHandlingEventException;
-
 /**
  * Thrown when trying to register an event with an unknown carrier movement id.
  */

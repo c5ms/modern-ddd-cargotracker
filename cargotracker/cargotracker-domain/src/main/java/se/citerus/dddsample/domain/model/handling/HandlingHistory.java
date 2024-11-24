@@ -24,6 +24,10 @@ public class HandlingHistory implements ValueObject<HandlingHistory> {
         return new HandlingHistory(new ArrayList<>());
     }
 
+    public static HandlingHistory of(Collection<HandlingEvent> events) {
+        return new HandlingHistory(events);
+    }
+
     /**
      * @return A distinct list (no duplicate registrations) of handling events, ordered by completion time.
      */

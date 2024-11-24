@@ -14,11 +14,9 @@ import java.util.List;
 @Schema(name = "Cargo")
 @Accessors(chain = true)
 public class CargoDto implements Serializable {
-
     private String trackingId;
-    private LocationDto origin;
-    private LocationDto destination;
+    private Boolean routed;
+    private String origin;
+    private String destination;
     private Instant arrivalDeadline;
-    private List<LegDto> legs;
-    private DeliveryDto delivery;
 }

@@ -40,13 +40,6 @@ public class Location implements DomainEntity<Location> {
     }
 
     /**
-     * @return country code and location code concatenated, always upper case.
-     */
-    public String idString() {
-        return unlocode;
-    }
-
-    /**
      * Package-level constructor, visible for test and sample data purposes.
      *
      * @param unLocode UN Locode

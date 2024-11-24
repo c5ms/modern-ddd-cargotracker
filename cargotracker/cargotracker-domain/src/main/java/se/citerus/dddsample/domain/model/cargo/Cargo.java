@@ -4,9 +4,14 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
+import se.citerus.dddsample.domain.model.cargo.events.CargoCreatedEvent;
+import se.citerus.dddsample.domain.model.cargo.events.CargoDestinationChangedEvent;
+import se.citerus.dddsample.domain.model.cargo.events.CargoRoutedEvent;
 import se.citerus.dddsample.domain.model.handling.HandlingHistory;
 import se.citerus.dddsample.domain.model.location.Location;
+import se.citerus.dddsample.domain.shared.AbstractEntity;
 import se.citerus.dddsample.domain.shared.DomainEntity;
+import se.citerus.dddsample.domain.shared.ImmutableValues;
 
 import java.time.Instant;
 import java.util.List;
@@ -17,9 +22,10 @@ import java.util.List;
 @Setter(AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class Cargo implements DomainEntity<Cargo> {
+public class Cargo extends AbstractEntity implements DomainEntity<Cargo> {
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
@@ -39,10 +45,11 @@ public class Cargo implements DomainEntity<Cargo> {
     private Cargo(TrackingId trackingId, RouteSpecification routeSpecification, Itinerary itinerary) {
         Validate.notNull(trackingId, "trackingId is required");
         Validate.notNull(routeSpecification, "Route specification is required");
-        this.trackingId = trackingId.idString();
+        this.trackingId = trackingId.getId();
         this.routeSpecification = routeSpecification;
         this.legs = itinerary.legs().toList();
         this.delivery = Delivery.derivedFrom(routeSpecification, itinerary, HandlingHistory.empty());
+        this.addEvent(CargoCreatedEvent.of(this));
     }
 
     public static Cargo of(TrackingId trackingId, Location origin, Location destination, Instant arrivalDeadline) {
@@ -66,57 +73,6 @@ public class Cargo implements DomainEntity<Cargo> {
     }
 
 
-    /**
-     * @return The itinerary. Never null.
-     */
-    public Itinerary itinerary() {
-        if (CollectionUtils.isEmpty(legs)) {
-            return Itinerary.empty();
-        }
-        if (legs == null || legs.isEmpty()) {
-            return Itinerary.empty();
-        }
-        return Itinerary.of(legs);
-    }
-
-    /**
-     * @return The route specification.
-     */
-    public RouteSpecification routeSpecification() {
-        return routeSpecification;
-    }
-
-    /**
-     * Specifies a new route for this cargo.
-     *
-     * @param routeSpecification route specification.
-     */
-    public void specifyNewRoute(final RouteSpecification routeSpecification) {
-        Validate.notNull(routeSpecification, "Route specification is required");
-
-        this.routeSpecification = routeSpecification;
-        Itinerary itineraryForRouting = this.legs != null && !this.legs.isEmpty() ? Itinerary.of(legs) : null;
-        // Handling consistency within the Cargo aggregate synchronously
-        this.delivery = delivery.updateOnRouting(this.routeSpecification, itineraryForRouting);
-    }
-
-    /**
-     * Attach a new itinerary to this cargo.
-     *
-     * @param itinerary an itinerary. May not be null.
-     */
-    public void assignToRoute(final Itinerary itinerary) {
-        Validate.notNull(itinerary, "Itinerary is required for assignment");
-
-        this.legs = itinerary.legs().toList();
-        // Handling consistency within the Cargo aggregate synchronously
-        this.delivery = delivery.updateOnRouting(this.routeSpecification, itinerary);
-    }
-
-    public void changeDestination(Location destination) {
-        this.routeSpecification = this.routeSpecification.withDestination(destination);
-
-    }
 
     /**
      * Updates all aspects of the cargo aggregate status
@@ -136,7 +92,65 @@ public class Cargo implements DomainEntity<Cargo> {
     public void deriveDeliveryProgress(final HandlingHistory handlingHistory) {
         // Delivery is a value object, so we can simply discard the old one
         // and replace it with a new
-        this.delivery = Delivery.derivedFrom(routeSpecification(), itinerary(), handlingHistory.filterOnCargo(TrackingId.of(this.trackingId)));
+        this.delivery = Delivery.derivedFrom(getRouteSpecification(), itinerary(), handlingHistory.filterOnCargo(TrackingId.of(this.trackingId)));
+    }
+
+    /**
+     * @return The itinerary. Never null.
+     */
+    public Itinerary itinerary() {
+        if (CollectionUtils.isEmpty(legs)) {
+            return Itinerary.empty();
+        }
+        if (legs == null || legs.isEmpty()) {
+            return Itinerary.empty();
+        }
+        return Itinerary.of(legs);
+    }
+
+
+    /**
+     * Attach a new itinerary to this cargo.
+     *
+     * @param itinerary an itinerary. May not be null.
+     */
+    public void assignToRoute(final Itinerary itinerary) {
+        Validate.notNull(itinerary, "Itinerary is required for assignment");
+
+        this.legs = itinerary.legs().toList();
+        // Handling consistency within the Cargo aggregate synchronously
+        this.delivery = delivery.updateOnRouting(this.routeSpecification, itinerary);
+        this.addEvent(CargoRoutedEvent.of(this));
+    }
+
+    /**
+     * Specifies a new route for this cargo.
+     *
+     * @param routeSpecification route specification.
+     */
+    private void specifyNewRoute(final RouteSpecification routeSpecification) {
+        Validate.notNull(routeSpecification, "Route specification is required");
+
+        this.routeSpecification = routeSpecification;
+        Itinerary itineraryForRouting = this.itinerary();
+        // Handling consistency within the Cargo aggregate synchronously
+        this.delivery = delivery.updateOnRouting(this.routeSpecification, itineraryForRouting);
+    }
+
+    public void changeDestination(Location destination) {
+        if (destination.equals(this.routeSpecification.getDestination())) {
+            return;
+        }
+        this.specifyNewRoute(this.routeSpecification.withDestination(destination));
+        this.addEvent(CargoDestinationChangedEvent.of(this));
+    }
+
+
+    public boolean isRouted() {
+        if (this.delivery.getRoutingStatus() == RoutingStatus.MIS_ROUTED) {
+            return false;
+        }
+        return !CollectionUtils.isEmpty(legs);
     }
 
     @Override
@@ -144,18 +158,7 @@ public class Cargo implements DomainEntity<Cargo> {
         return other != null && trackingId.equals(other.trackingId);
     }
 
-    /**
-     * @return Hash code of tracking id.
-     */
-    @Override
-    public int hashCode() {
-        return trackingId.hashCode();
+    public ImmutableValues<Leg> getLegs() {
+        return ImmutableValues.of(legs);
     }
-
-    @Override
-    public String toString() {
-        return trackingId;
-    }
-
-
 }

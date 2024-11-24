@@ -1,4 +1,4 @@
-package se.citerus.dddsample.infrastructure.configure;
+package se.citerus.dddsample.application.configure;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
@@ -16,18 +16,17 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.YearMonthSerializer;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.media.Schema;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.models.GroupedOpenApi;
-import org.springdoc.core.utils.SpringDocUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
+import se.citerus.dddsample.application.service.HandlingEventReceiver;
+import se.citerus.dddsample.application.service.impl.QueuedHandlingEventReceiver;
+import se.citerus.dddsample.application.service.impl.ThreadPooledHandlingEventReceiver;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,16 +36,15 @@ import java.time.format.DateTimeFormatter;
 
 
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties({CargoTrackerCoreProperties.class, CargoTrackerRestProperties.class})
+@EnableConfigurationProperties({CargoTrackerApplicationProperties.class})
 @RequiredArgsConstructor
-class CargoTrackerCoreConfigure {
+class CargoTrackerApplicationConfigure {
 
-    private final CargoTrackerCoreProperties cargoTrackerCoreProperties;
-    private final CargoTrackerRestProperties cargoTrackerRestProperties;
+    private final CargoTrackerApplicationProperties cargoTrackerApplicationProperties;
 
     @Bean
     Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
-        var properties = cargoTrackerCoreProperties.getJson();
+        var properties = cargoTrackerApplicationProperties.getJson();
 
         return builder -> builder
             .serializerByType(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(properties.getDateFormat())))
@@ -84,55 +82,16 @@ class CargoTrackerCoreConfigure {
     }
 
     @Bean
-    public GroupedOpenApi restApi() {
-        return GroupedOpenApi.builder()
-            .group("resource-api")
-            .displayName("resource")
-            .pathsToMatch("/**")
-            .build();
-    }
-
-    @Bean
-    public OpenAPI openAPI() {
-        var jsonProperties = cargoTrackerCoreProperties.getJson();
-
-
-        SpringDocUtils.getConfig().replaceWithSchema(LocalDate.class, new Schema<LocalDate>()
-            .type("string")
-            .format(jsonProperties.getTimeFormat())
-            .example(LocalDate.of(2024, 1, 1).format(DateTimeFormatter.ofPattern(jsonProperties.getDateFormat()))));
-
-        SpringDocUtils.getConfig().replaceWithSchema(LocalTime.class, new Schema<LocalTime>()
-            .type("string")
-            .format(jsonProperties.getTimeFormat())
-            .example(LocalTime.of(20, 0, 0).format(DateTimeFormatter.ofPattern(jsonProperties.getTimeFormat()))));
-
-        SpringDocUtils.getConfig().replaceWithSchema(LocalDateTime.class, new Schema<LocalDateTime>()
-            .type("string")
-            .format(jsonProperties.getTimeFormat())
-            .example(LocalDateTime.of(2024, 1, 1, 20, 0, 0).format(DateTimeFormatter.ofPattern(jsonProperties.getDatetimeFormat()))));
-
-        SpringDocUtils.getConfig().replaceWithSchema(YearMonth.class, new Schema<YearMonth>()
-            .type("string")
-            .format(jsonProperties.getTimeFormat())
-            .example(YearMonth.of(2024, 1).format(DateTimeFormatter.ofPattern(jsonProperties.getYearMonthFormat()))));
-
-        var openApiProperties = cargoTrackerRestProperties.getOpenapi();
-
-        return new OpenAPI()
-            .info(new Info()
-                .version(openApiProperties.getVersion())
-                .title(openApiProperties.getTitle())
-                .description(openApiProperties.getDescription())
-                .termsOfService(openApiProperties.getTermsOfService())
-                .contact(new Contact()
-                    .name(openApiProperties.getContact().getName())
-                    .url(openApiProperties.getContact().getUrl())
-                    .email(openApiProperties.getContact().getEmail()))
-                .license(new License()
-                    .name(openApiProperties.getLicense().getName())
-                    .url(openApiProperties.getLicense().getUrl()))
-            );
+    HandlingEventReceiver handlingEventReceiver(@Qualifier("taskExecutor") TaskExecutor taskExecutor, ApplicationEventPublisher eventPublisher) {
+        switch (cargoTrackerApplicationProperties.getHandlingEvent().getStrategy()){
+            case QUEUED -> {
+                return new QueuedHandlingEventReceiver();
+            }
+            case THREAD_POOLED -> {
+                return new ThreadPooledHandlingEventReceiver(taskExecutor,eventPublisher);
+            }
+        }
+        throw new IllegalStateException("unknown how to config HandlingEventReceiver");
     }
 
 }

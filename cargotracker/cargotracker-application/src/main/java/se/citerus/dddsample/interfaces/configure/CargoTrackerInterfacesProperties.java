@@ -1,11 +1,11 @@
-package se.citerus.dddsample.infrastructure.configure;
+package se.citerus.dddsample.interfaces.configure;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
-@ConfigurationProperties(prefix = "application.rest")
-class CargoTrackerRestProperties {
+@ConfigurationProperties(prefix = "cargotracker.interfaces")
+class CargoTrackerInterfacesProperties {
 
     private ElevenOpenapiProperties openapi = new ElevenOpenapiProperties();
 

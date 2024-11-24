@@ -1,4 +1,4 @@
-package se.citerus.dddsample.interfaces.convertor;
+package se.citerus.dddsample.interfaces.model.convertor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -65,16 +65,15 @@ public class CargoConvertor {
 
     public CargoDto toDto(Cargo cargo) {
         return new CargoDto()
+            .setRouted(cargo.isRouted())
             .setTrackingId(cargo.getTrackingId())
-            .setOrigin(toDto(cargo.getRouteSpecification().getOrigin()))
-            .setDestination(toDto(cargo.getRouteSpecification().getDestination()))
+            .setOrigin(cargo.getRouteSpecification().getOrigin().getUnlocode())
+            .setDestination(cargo.getRouteSpecification().getDestination().getUnlocode())
             .setArrivalDeadline(cargo.getRouteSpecification().getArrivalDeadline())
-            .setLegs(cargo.getLegs().stream().map(this::toDto).toList())
-            .setDelivery(toDto(cargo.getDelivery()))
             ;
     }
 
-    private DeliveryDto toDto(Delivery delivery) {
+    public DeliveryDto toDto(Delivery delivery) {
         return new DeliveryDto()
             .setEta(delivery.getEta())
             .setCalculatedAt(delivery.getCalculatedAt())
@@ -86,18 +85,20 @@ public class CargoConvertor {
             ;
     }
 
-    private LegDto toDto(Leg leg) {
+    public LegDto toDto(Leg leg) {
         return new LegDto()
             .setVoyageNumber(leg.voyage().getVoyageNumber())
-            .setFrom(leg.getLoadLocation().idString())
-            .setTo(leg.getUnloadLocation().idString())
+            .setFrom(leg.getLoadLocation().getUnlocode())
+            .setTo(leg.getUnloadLocation().getUnlocode())
             .setUnloadTime(leg.unloadTime())
             .setLoadTime(leg.loadTime())
             ;
     }
 
-    private LocationDto toDto(Location origin) {
-        return new LocationDto().setUnlocode(origin.getUnlocode()).setName(origin.getName());
+    public LocationDto toDto(Location origin) {
+        return new LocationDto()
+            .setUnlocode(origin.getUnlocode())
+            .setName(origin.getName());
     }
 
 }

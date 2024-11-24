@@ -1,4 +1,4 @@
-package se.citerus.dddsample.infrastructure.configure;
+package se.citerus.dddsample.application.configure;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -6,10 +6,22 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.TimeZone;
 
 @Data
-@ConfigurationProperties(prefix = "application.core")
-public class CargoTrackerCoreProperties {
+@ConfigurationProperties(prefix = "cargotracker.application")
+public class CargoTrackerApplicationProperties {
 
     private final Json json = new Json();
+
+    private final HandlingEvent handlingEvent = new HandlingEvent();
+
+    @Data
+    public static class HandlingEvent {
+        private HandlingEventProcessStrategy strategy;
+    }
+
+    public enum HandlingEventProcessStrategy {
+        QUEUED,
+        THREAD_POOLED
+    }
 
     @Data
     public static class Json {

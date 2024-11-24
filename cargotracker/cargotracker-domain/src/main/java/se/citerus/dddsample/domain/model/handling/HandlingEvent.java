@@ -4,15 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import se.citerus.dddsample.domain.model.cargo.Cargo;
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.model.voyage.Voyage;
-import se.citerus.dddsample.domain.shared.DomainEvent;
-import se.citerus.dddsample.domain.shared.ValueObject;
+import se.citerus.dddsample.domain.shared.DomainEntity;
 
 import java.time.Instant;
-import java.util.Objects;
 
 /**
  * A HandlingEvent is used to register the event when, for instance,
@@ -36,7 +33,7 @@ import java.util.Objects;
 @Setter(AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public final class HandlingEvent implements DomainEvent<HandlingEvent> {
+public final class HandlingEvent implements DomainEntity<HandlingEvent> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,12 +69,12 @@ public final class HandlingEvent implements DomainEvent<HandlingEvent> {
      * @param location         where the event took place
      * @param voyage           the voyage
      */
-    public HandlingEvent(final Cargo cargo,
-                         final Instant completionTime,
-                         final Instant registrationTime,
-                         final Type type,
-                         final Location location,
-                         final Voyage voyage) {
+    private HandlingEvent(final Cargo cargo,
+                          final Instant completionTime,
+                          final Instant registrationTime,
+                          final Type type,
+                          final Location location,
+                          final Voyage voyage) {
         Validate.notNull(cargo, "Cargo is required");
         Validate.notNull(completionTime, "Completion time is required");
         Validate.notNull(registrationTime, "Registration time is required");
@@ -104,11 +101,11 @@ public final class HandlingEvent implements DomainEvent<HandlingEvent> {
      * @param type             type of event
      * @param location         where the event took place
      */
-    public HandlingEvent(final Cargo cargo,
-                         final Instant completionTime,
-                         final Instant registrationTime,
-                         final Type type,
-                         final Location location) {
+    private HandlingEvent(final Cargo cargo,
+                          final Instant completionTime,
+                          final Instant registrationTime,
+                          final Type type,
+                          final Location location) {
         Validate.notNull(cargo, "Cargo is required");
         Validate.notNull(completionTime, "Completion time is required");
         Validate.notNull(registrationTime, "Registration time is required");
@@ -127,7 +124,23 @@ public final class HandlingEvent implements DomainEvent<HandlingEvent> {
         this.voyage = null;
     }
 
-    @Override
+    public static HandlingEvent of(final Cargo cargo,
+                                   final Instant completionTime,
+                                   final Instant registrationTime,
+                                   final Type type,
+                                   final Location location) {
+        return new HandlingEvent(cargo, completionTime, registrationTime, type, location);
+    }
+
+    public static HandlingEvent createHandlingEvent(final Cargo cargo,
+                                                    final Instant completionTime,
+                                                    final Instant registrationTime,
+                                                    final Type type,
+                                                    final Location location,
+                                                    final Voyage voyage) {
+        return new HandlingEvent(cargo, completionTime, registrationTime, type, location, voyage);
+    }
+
     public boolean sameEventAs(final HandlingEvent other) {
         return other != null && new EqualsBuilder().
             append(this.cargo, other.cargo).
@@ -136,6 +149,12 @@ public final class HandlingEvent implements DomainEvent<HandlingEvent> {
             append(this.location, other.location).
             append(this.type, other.type).
             isEquals();
+    }
+
+
+    @Override
+    public boolean sameIdentityAs(final HandlingEvent other) {
+        return other != null && this.id==other.id;
     }
 
 

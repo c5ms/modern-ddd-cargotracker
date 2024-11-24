@@ -1,1 +1,0 @@
-will implement pathfinder application here and cargo tracker will call to the remote API by rest client.

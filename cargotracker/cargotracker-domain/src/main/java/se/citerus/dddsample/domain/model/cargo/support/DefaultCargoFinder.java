@@ -22,7 +22,7 @@ public class DefaultCargoFinder implements CargoFinder {
 
     @Override
     public Optional<Cargo> find(TrackingId trackingId) {
-        return cargoRepository.findByTrackingId(trackingId.idString());
+        return cargoRepository.findByTrackingId(trackingId.getId());
     }
 
     @Override

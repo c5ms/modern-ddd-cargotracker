@@ -7,9 +7,7 @@ public interface CargoFinder {
 
     Collection<Cargo> listAll();
 
-
     Optional<Cargo> find(TrackingId trackingId);
-
 
     Cargo require(TrackingId trackingId) throws UnknownCargoException;
 

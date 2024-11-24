@@ -1,7 +1,5 @@
 package se.citerus.dddsample.domain.model.cargo;
 
-import se.citerus.dddsample.domain.model.handling.CannotCreateHandlingEventException;
-
 /**
  * Thrown when trying to register an event with an unknown tracking id.
  */
@@ -21,6 +19,6 @@ public final class UnknownCargoException extends RuntimeException {
      */
     @Override
     public String getMessage() {
-        return "No cargo with tracking id " + trackingId.idString() + " exists in the system";
+        return "No cargo with tracking id " + trackingId.getId() + " exists in the system";
     }
 }

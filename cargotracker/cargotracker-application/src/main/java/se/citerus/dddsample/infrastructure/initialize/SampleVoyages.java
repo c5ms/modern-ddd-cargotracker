@@ -20,7 +20,7 @@ import static se.citerus.dddsample.infrastructure.initialize.SampleLocations.*;
 /**
  * Sample carrier movements, for test purposes.
  */
-public class SampleVoyages {
+class SampleVoyages {
 
     public static final Voyage CM001 = createVoyage("CM001", STOCKHOLM, HAMBURG);
     public static final Voyage CM002 = createVoyage("CM002", HAMBURG, HONGKONG);
@@ -28,19 +28,12 @@ public class SampleVoyages {
     public static final Voyage CM004 = createVoyage("CM004", NEWYORK, CHICAGO);
     public static final Voyage CM005 = createVoyage("CM005", CHICAGO, HAMBURG);
     public static final Voyage CM006 = createVoyage("CM006", HAMBURG, HANGZHOU);
-
-    private static Voyage createVoyage(String id, Location from, Location to) {
-        var schedule = Schedule.of(List.of(CarrierMovement.of(from, to, Instant.now(), Instant.now())));
-        var voyageNumber = VoyageNumber.of(id);
-        return Voyage.of(voyageNumber, schedule);
-    }
-
-    // TODO CM00[1-6] and createVoyage are deprecated. Remove and refactor tests.
-
     public final static Voyage v100 = new Voyage.Builder(VoyageNumber.of("V100"), HONGKONG).
         addMovement(TOKYO, toDate("2009-03-03"), toDate("2009-03-05")).
         addMovement(NEWYORK, toDate("2009-03-06"), toDate("2009-03-09")).
         build();
+
+    // TODO CM00[1-6] and createVoyage are deprecated. Remove and refactor tests.
     public final static Voyage v200 = new Voyage.Builder(VoyageNumber.of("V200"), TOKYO).
         addMovement(NEWYORK, toDate("2009-03-06"), toDate("2009-03-08")).
         addMovement(CHICAGO, toDate("2009-03-10"), toDate("2009-03-14")).
@@ -57,7 +50,6 @@ public class SampleVoyages {
         addMovement(HELSINKI, toDate("2009-03-15"), toDate("2009-03-16")).
         addMovement(HAMBURG, toDate("2009-03-20"), toDate("2009-03-22")).
         build();
-
     /**
      * Voyage number 0100S (by ship)
      * <p>
@@ -70,8 +62,6 @@ public class SampleVoyages {
             addMovement(MELBOURNE, toDate("2008-10-06", "11:00"), toDate("2008-10-12", "11:30")).
             addMovement(NEWYORK, toDate("2008-10-14", "12:00"), toDate("2008-10-23", "23:10")).
             build();
-
-
     /**
      * Voyage number 0200T (by train)
      * <p>
@@ -82,7 +72,6 @@ public class SampleVoyages {
             addMovement(CHICAGO, toDate("2008-10-24", "07:00"), toDate("2008-10-24", "17:45")).
             addMovement(DALLAS, toDate("2008-10-24", "21:25"), toDate("2008-10-25", "19:30")).
             build();
-
     /**
      * Voyage number 0300A (by airplane)
      * <p>
@@ -94,7 +83,6 @@ public class SampleVoyages {
             addMovement(STOCKHOLM, toDate("2008-11-01", "15:20"), toDate("2008-11-01", "18:40")).
             addMovement(HELSINKI, toDate("2008-11-02", "09:00"), toDate("2008-11-02", "11:15")).
             build();
-
     /**
      * Voyage number 0301S (by ship)
      * <p>
@@ -104,7 +92,6 @@ public class SampleVoyages {
         new Voyage.Builder(VoyageNumber.of("0301S"), DALLAS).
             addMovement(HELSINKI, toDate("2008-10-29", "03:30"), toDate("2008-11-05", "15:45")).
             build();
-
     /**
      * Voyage number 0400S (by ship)
      * <p>
@@ -116,7 +103,6 @@ public class SampleVoyages {
             addMovement(SHANGHAI, toDate("2008-11-10", "21:45"), toDate("2008-11-22", "16:40")).
             addMovement(HONGKONG, toDate("2008-11-24", "07:00"), toDate("2008-11-28", "13:37")).
             build();
-
     public static final Map<VoyageNumber, Voyage> ALL = new HashMap<>();
 
     static {
@@ -130,6 +116,12 @@ public class SampleVoyages {
                 }
             }
         }
+    }
+
+    private static Voyage createVoyage(String id, Location from, Location to) {
+        var schedule = Schedule.of(List.of(CarrierMovement.of(from, to, Instant.now(), Instant.now())));
+        var voyageNumber = VoyageNumber.of(id);
+        return Voyage.of(voyageNumber, schedule);
     }
 
     public static List<Voyage> getAll() {
