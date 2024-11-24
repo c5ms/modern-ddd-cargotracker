@@ -8,12 +8,13 @@ import se.citerus.dddsample.domain.model.cargo.TrackingId;
 import se.citerus.dddsample.domain.model.location.UnLocode;
 import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class HandlingEventReport {
+public class HandlingReport  implements Serializable {
     private final Instant registrationTime;
 
     private final Instant completionTime;

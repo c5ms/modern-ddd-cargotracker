@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import se.citerus.dddsample.application.service.CargoService;
+import se.citerus.dddsample.application.service.BookingService;
 import se.citerus.dddsample.domain.model.cargo.CargoFinder;
 import se.citerus.dddsample.domain.model.cargo.TrackingId;
 import se.citerus.dddsample.domain.model.cargo.UnknownCargoException;
@@ -31,7 +31,7 @@ public class CargoResource {
 
     private final CargoFinder cargoFinder;
     private final CargoConvertor cargoConvertor;
-    private final CargoService cargoService;
+    private final BookingService bookingService;
 
     @ExceptionHandler(UnknownCargoException.class)
     ResponseEntity<Void> on(UnknownCargoException ignored) {
@@ -60,7 +60,7 @@ public class CargoResource {
     @PostMapping
     public CargoDto register(@Validated @RequestBody CargoRegisterRequest request) {
         var command = cargoConvertor.toCommand(request);
-        var cargo = cargoService.book(command);
+        var cargo = bookingService.book(command);
         return cargoConvertor.toDto(cargo);
     }
 
@@ -71,7 +71,7 @@ public class CargoResource {
     @PutMapping(value = "/{trackingId}/itinerary")
     public CargoDto assignItinerary(@PathVariable("trackingId") TrackingId trackingId, @Validated @RequestBody CargoAssignRouteRequest request) {
         var command = cargoConvertor.toCommand(request);
-        cargoService.assignRoute(trackingId, command);
+        bookingService.assignRoute(trackingId, command);
         var cargo = cargoFinder.require(trackingId);
         return cargoConvertor.toDto(cargo);
     }
@@ -82,7 +82,7 @@ public class CargoResource {
     @PutMapping(value = "/{trackingId}/destination")
     public CargoDto changeDestination(@PathVariable("trackingId") TrackingId trackingId, @Validated @RequestBody CargoChangeDestinationRequest request) {
         var command = cargoConvertor.toCommand(request);
-        cargoService.changeDestination(trackingId, command);
+        bookingService.changeDestination(trackingId, command);
         var cargo = cargoFinder.require(trackingId);
         return cargoConvertor.toDto(cargo);
     }

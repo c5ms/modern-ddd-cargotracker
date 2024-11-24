@@ -4,12 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionalEventListener;
 import se.citerus.dddsample.application.events.CargoArrivedEvent;
 import se.citerus.dddsample.application.events.CargoHandledEvent;
 import se.citerus.dddsample.application.events.CargoMisdirectedEvent;
-import se.citerus.dddsample.application.service.CargoService;
-import se.citerus.dddsample.application.shared.ApplicationEvent;
+import se.citerus.dddsample.application.service.BookingService;
+import se.citerus.dddsample.application.service.CargoInspector;
 import se.citerus.dddsample.domain.model.cargo.TrackingId;
 import se.citerus.dddsample.domain.shared.DomainEvent;
 
@@ -22,7 +21,7 @@ import se.citerus.dddsample.domain.shared.DomainEvent;
 @RequiredArgsConstructor
 public class CargoListener {
 
-    private final CargoService cargoService;
+    private final CargoInspector cargoInspector;
 
     @EventListener(classes = DomainEvent.class)
     public void on(DomainEvent event) {
@@ -31,7 +30,7 @@ public class CargoListener {
 
     @EventListener(classes = CargoHandledEvent.class)
     public void on(CargoHandledEvent event) {
-        cargoService.inspectCargo(TrackingId.of(event.getTrackingId()));
+        cargoInspector.inspectCargo(TrackingId.of(event.getTrackingId()));
     }
 
     @EventListener(classes = CargoMisdirectedEvent.class)

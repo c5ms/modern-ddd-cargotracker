@@ -24,7 +24,7 @@ public class HandlingEventFactory {
     private final VoyageFinder voyageFinder;
     private final LocationFinder locationFinder;
 
-    public HandlingEvent createHandlingEvent(HandlingEventReport report) {
+    public HandlingEvent createHandlingEvent(HandlingReport report) {
         final Cargo cargo = cargoFinder.require(report.getTrackingId());
         final Location location = locationFinder.require(report.getUnLocode());
         final Instant completionTime = report.getCompletionTime();

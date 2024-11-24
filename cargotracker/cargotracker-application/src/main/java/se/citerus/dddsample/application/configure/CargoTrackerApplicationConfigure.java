@@ -17,16 +17,17 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.YearMonthSerializer;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
-import se.citerus.dddsample.application.service.HandlingEventReceiver;
-import se.citerus.dddsample.application.service.impl.QueuedHandlingEventReceiver;
-import se.citerus.dddsample.application.service.impl.ThreadPooledHandlingEventReceiver;
+import se.citerus.dddsample.application.service.HandlingReportReceiver;
+import se.citerus.dddsample.application.service.impl.HandlingReportMessageSender;
+import se.citerus.dddsample.application.service.impl.QueuedHandlingReportReceiver;
+import se.citerus.dddsample.application.service.impl.ThreadPooledHandlingReportReceiver;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -82,13 +83,18 @@ class CargoTrackerApplicationConfigure {
     }
 
     @Bean
-    HandlingEventReceiver handlingEventReceiver(@Qualifier("taskExecutor") TaskExecutor taskExecutor, ApplicationEventPublisher eventPublisher) {
+    HandlingReportReceiver handlingEventReceiver(ApplicationContext applicationContext) {
         switch (cargoTrackerApplicationProperties.getHandlingEvent().getStrategy()){
             case QUEUED -> {
-                return new QueuedHandlingEventReceiver();
+                return new QueuedHandlingReportReceiver(
+                    applicationContext.getBean(HandlingReportMessageSender.class)
+                );
             }
             case THREAD_POOLED -> {
-                return new ThreadPooledHandlingEventReceiver(taskExecutor,eventPublisher);
+                return new ThreadPooledHandlingReportReceiver(
+                    applicationContext.getBean(TaskExecutor.class),
+                    applicationContext.getBean(ApplicationEventPublisher.class)
+                );
             }
         }
         throw new IllegalStateException("unknown how to config HandlingEventReceiver");

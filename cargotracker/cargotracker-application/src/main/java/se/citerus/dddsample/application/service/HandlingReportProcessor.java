@@ -6,7 +6,7 @@ import se.citerus.dddsample.application.command.HandlingReportProcessCommand;
 /**
  * Handling event service.
  */
-public interface HandlingEventProcessor {
+public interface HandlingReportProcessor {
 
     void processHandingEvent(HandlingReportProcessCommand command);
 

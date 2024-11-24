@@ -1,6 +1,5 @@
 package se.citerus.dddsample.infrastructure.message;
 
-import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,11 +13,11 @@ import se.citerus.dddsample.application.events.CargoMisdirectedEvent;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JmsApplicationEventListener {
+public class JmsApplicationEventMessageListener {
 
     private final ApplicationEventPublisher publisher;
 
-    @JmsListener(destination = JmsApplicationEventQueues.QUEUE_NAME_CARGO_HANDLED_QUEUE)
+    @JmsListener(destination = JmsMessageQueues.QUEUE_NAME_CARGO_HANDLED_QUEUE)
     public void onCargoHandled(Message message) {
         try {
             var trackingId = message.getBody(String.class);
@@ -28,7 +27,7 @@ public class JmsApplicationEventListener {
         }
     }
 
-    @JmsListener(destination = JmsApplicationEventQueues.QUEUE_NAME_CARGO_ARRIVED_QUEUE)
+    @JmsListener(destination = JmsMessageQueues.QUEUE_NAME_CARGO_ARRIVED_QUEUE)
     public void onCargoArrived(Message message) {
         try {
             var trackingId = message.getBody(String.class);
@@ -38,7 +37,7 @@ public class JmsApplicationEventListener {
         }
     }
 
-    @JmsListener(destination = JmsApplicationEventQueues.QUEUE_NAME_CARGO_MISDIRECTED_QUEUE)
+    @JmsListener(destination = JmsMessageQueues.QUEUE_NAME_CARGO_MISDIRECTED_QUEUE)
     public void onCargoMisdirected(Message message) {
         try {
             var trackingId = message.getBody(String.class);

@@ -6,19 +6,19 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.task.TaskExecutor;
 import se.citerus.dddsample.application.command.HandlingReportProcessCommand;
 import se.citerus.dddsample.application.command.HandlingReportReceiveCommand;
-import se.citerus.dddsample.application.service.HandlingEventReceiver;
-import se.citerus.dddsample.domain.model.handling.HandlingEventReport;
+import se.citerus.dddsample.application.service.HandlingReportReceiver;
+import se.citerus.dddsample.domain.model.handling.HandlingReport;
 
 @Slf4j
 @RequiredArgsConstructor
-public class ThreadPooledHandlingEventReceiver implements HandlingEventReceiver {
+public class ThreadPooledHandlingReportReceiver implements HandlingReportReceiver {
 
     private final TaskExecutor taskExecutor;
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public void receiveHandlingReport(HandlingReportReceiveCommand command) {
-        for (HandlingEventReport report : command.getReports()) {
+        for (HandlingReport report : command.getReports()) {
             // using spring event publisher to publish command as event in a taskExecutor
             // so the command wil be handled by DefaultHandlingEventProcessor async.
             // todo add fail back handler
@@ -26,7 +26,7 @@ public class ThreadPooledHandlingEventReceiver implements HandlingEventReceiver 
         }
     }
 
-    private void processInternal(HandlingEventReport report) {
+    private void processInternal(HandlingReport report) {
         try {
             var processCommand = HandlingReportProcessCommand.builder().report(report).build();
             eventPublisher.publishEvent(processCommand);

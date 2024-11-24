@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import se.citerus.dddsample.application.service.HandlingEventReceiver;
+import se.citerus.dddsample.application.service.HandlingReportReceiver;
 import se.citerus.dddsample.interfaces.model.convertor.HandlingConvertor;
 import se.citerus.dddsample.interfaces.model.dto.HandlingReportDto;
 
@@ -19,13 +19,13 @@ import se.citerus.dddsample.interfaces.model.dto.HandlingReportDto;
 public class ReportResource {
 
     private final HandlingConvertor handlingConvertor;
-    private final HandlingEventReceiver handlingEventReceiver;
+    private final HandlingReportReceiver handlingReportReceiver;
 
     @Operation(summary = "receive handing event reports")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping(value = "/reports")
     public void receiveReport(@Validated @RequestBody HandlingReportDto report) {
         var command = handlingConvertor.toReport(report);
-        handlingEventReceiver.receiveHandlingReport(command);
+        handlingReportReceiver.receiveHandlingReport(command);
     }
 }

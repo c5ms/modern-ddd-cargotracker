@@ -10,8 +10,8 @@ import se.citerus.dddsample.application.shared.ApplicationEvent;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-@ConditionalOnMissingBean(ApplicationEventSender.class)
-public class InternalApplicationEventSender implements ApplicationEventSender{
+@ConditionalOnMissingBean(ApplicationEventMessageSender.class)
+public class InternalApplicationEventMessageSender implements ApplicationEventMessageSender {
 
     private final  ApplicationEventPublisher publisher;
 
