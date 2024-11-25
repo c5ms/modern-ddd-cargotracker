@@ -1,18 +1,20 @@
 # DDDSample 
 
-## How to build
-
-```shell
-cd ./cargotracker
-./mvnw spring-boot:run
-```
 
 ## Domain architecture
-
 ![domain_architecture.png](src/uml/domain_architecture.png)
 
-## Open API
+## Get Started
 
-Stat up the application and open http://127.0.0.1:9000/swagger-ui/index.html, and you will see:
+```shell
+mvn package
+cd target
+tar -xf cargotracker-application-1.0.0.tar.gz
+cd cargotracker-application-1.0.0
+./bin/run
+```
+
+Open http://127.0.0.1:9000/swagger-ui/index.html you will see the open api
 
 ![open-api.png](src/img/open-api.png)
+

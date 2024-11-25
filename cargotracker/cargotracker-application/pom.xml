@@ -12,6 +12,11 @@
 
     <artifactId>cargotracker-application</artifactId>
 
+    <properties>
+        <app.main>se.citerus.dddsample.Application</app.main>
+        <app.output>${project.basedir}/../../target</app.output>
+    </properties>
+
     <dependencies>
 
         <dependency>
@@ -87,6 +92,24 @@
         </dependency>
 
     </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                 <groupId>org.codehaus.mojo</groupId>
+                 <artifactId>appassembler-maven-plugin</artifactId>
+             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+            </plugin>
+          <!--  <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+            </plugin>-->
+        </plugins>
+    </build>
 
 
 
