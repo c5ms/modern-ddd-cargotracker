@@ -1,5 +1,10 @@
 # DDDSample 
 
+## Technic stack
+- Spring boot 3
+- JPA (Spring Data JPA)
+- JMS (Spring Activemq)
+
 
 ## Domain architecture
 ![domain_architecture.png](src/uml/domain_architecture.png)
