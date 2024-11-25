@@ -3,7 +3,7 @@
 ## How to build
 
 ```shell
-cd ./cargotracker-service
+cd ./cargotracker
 ./mvnw spring-boot:run
 ```
 
