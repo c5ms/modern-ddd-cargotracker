@@ -66,16 +66,16 @@ public class Voyage implements DomainEntity<Voyage> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null) return false;
-        if (!(o instanceof Voyage)) return false;
-
-        final Voyage that = (Voyage) o;
-
+        if (!(o instanceof Voyage that)) return false;
         return sameIdentityAs(that);
     }
 
     @Override
     public boolean sameIdentityAs(Voyage other) {
-        return other != null && this.voyageNumber().sameValueAs(other.voyageNumber());
+        if(null==other){
+            return false;
+        }
+        return this.voyageNumber().sameValueAs(other.voyageNumber());
     }
 
     @Override

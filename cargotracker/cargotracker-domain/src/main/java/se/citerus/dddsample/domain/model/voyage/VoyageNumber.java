@@ -24,7 +24,10 @@ public class VoyageNumber implements ValueObject<VoyageNumber> {
 
     @Override
     public boolean sameValueAs(VoyageNumber other) {
-        return other != null && this.number.equals(other.number);
+        if (null == other) {
+            return false;
+        }
+        return this.number.equals(other.number);
     }
 
     @Override

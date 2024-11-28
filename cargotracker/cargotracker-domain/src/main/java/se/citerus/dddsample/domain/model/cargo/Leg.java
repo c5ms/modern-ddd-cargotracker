@@ -62,26 +62,6 @@ public class Leg implements ValueObject<Leg> {
         return new Leg(voyage, loadLocation, unloadLocation, loadTime, unloadTime);
     }
 
-    public Voyage voyage() {
-        return voyage;
-    }
-
-    public Location loadLocation() {
-        return loadLocation;
-    }
-
-    public Location unloadLocation() {
-        return unloadLocation;
-    }
-
-    public Instant loadTime() {
-        return loadTime;
-    }
-
-    public Instant unloadTime() {
-        return unloadTime;
-    }
-
     @Override
     public boolean sameValueAs(final Leg other) {
         return other != null && new EqualsBuilder().

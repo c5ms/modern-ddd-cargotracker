@@ -20,12 +20,11 @@ import java.time.Instant;
  */
 @Getter
 @Embeddable
-@With
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RouteSpecification extends AbstractSpecification<Itinerary> implements ValueObject<RouteSpecification> {
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "spec_origin_id")
     private Location origin;
 
@@ -35,7 +34,6 @@ public class RouteSpecification extends AbstractSpecification<Itinerary> impleme
 
     @Column(name = "spec_arrival_deadline", nullable = false)
     private Instant arrivalDeadline;
-
 
     private RouteSpecification(final Location origin, final Location destination, final Instant arrivalDeadline) {
         Validate.notNull(origin, "Origin is required");
@@ -54,6 +52,10 @@ public class RouteSpecification extends AbstractSpecification<Itinerary> impleme
      * @param arrivalDeadline arrival deadline
      */
     public static RouteSpecification of(final Location origin, final Location destination, final Instant arrivalDeadline) {
+        return new RouteSpecification(origin, destination, arrivalDeadline);
+    }
+
+    public RouteSpecification changeDestination(final Location destination) {
         return new RouteSpecification(origin, destination, arrivalDeadline);
     }
 

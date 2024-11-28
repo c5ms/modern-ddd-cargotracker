@@ -154,7 +154,10 @@ public final class HandlingEvent implements DomainEntity<HandlingEvent> {
 
     @Override
     public boolean sameIdentityAs(final HandlingEvent other) {
-        return other != null && this.id==other.id;
+        if(null==other){
+            return false;
+        }
+        return this.id == other.id;
     }
 
 

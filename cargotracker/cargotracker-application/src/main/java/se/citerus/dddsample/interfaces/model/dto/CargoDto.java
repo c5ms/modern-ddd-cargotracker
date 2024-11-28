@@ -14,7 +14,6 @@ import java.time.Instant;
 @Accessors(chain = true)
 public class CargoDto implements Serializable {
     private String trackingId;
-    private Boolean routed;
     private String origin;
     private String destination;
     private Instant arrivalDeadline;

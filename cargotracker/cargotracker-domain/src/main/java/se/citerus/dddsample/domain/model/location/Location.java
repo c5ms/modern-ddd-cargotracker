@@ -20,6 +20,8 @@ import se.citerus.dddsample.domain.shared.DomainEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Location implements DomainEntity<Location> {
 
+    public  static final Location UNKNOWN=new Location("XXXXX", "Unknown location");
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -54,11 +56,6 @@ public class Location implements DomainEntity<Location> {
         return new Location(unLocode, name);
     }
 
-    public static Location unknown() {
-        return new Location("XXXXX", "Unknown location");
-    }
-
-
     /**
      * @param object to compare
      * @return Since this is an entiy this will be true iff UN locodes are equal.
@@ -79,6 +76,9 @@ public class Location implements DomainEntity<Location> {
 
     @Override
     public boolean sameIdentityAs(final Location other) {
+        if(null==other){
+            return false;
+        }
         return this.unlocode.equals(other.unlocode);
     }
 

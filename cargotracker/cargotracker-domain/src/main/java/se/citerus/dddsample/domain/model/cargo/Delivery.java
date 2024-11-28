@@ -61,7 +61,7 @@ public class Delivery implements ValueObject<Delivery> {
     @JoinColumn(name = "current_voyage_id")
     private Voyage currentVoyage;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "last_known_location_id")
     private Location lastKnownLocation;
 
@@ -134,7 +134,7 @@ public class Delivery implements ValueObject<Delivery> {
      * @return Last known location of the cargo, or Location.UNKNOWN if the delivery history is empty.
      */
     public Location lastKnownLocation() {
-        return Objects.requireNonNullElse(lastKnownLocation, Location.unknown());
+        return Objects.requireNonNullElse(lastKnownLocation, Location.UNKNOWN);
     }
 
     /**
@@ -208,8 +208,8 @@ public class Delivery implements ValueObject<Delivery> {
         return switch (lastEvent.getType()) {
             case LOAD -> {
                 for (Leg leg : itinerary.legs()) {
-                    if (leg.loadLocation().sameIdentityAs(lastEvent.getLocation())) {
-                        yield new HandlingActivity(HandlingEvent.Type.UNLOAD, leg.unloadLocation(), leg.voyage());
+                    if (leg.getLoadLocation().sameIdentityAs(lastEvent.getLocation())) {
+                        yield new HandlingActivity(HandlingEvent.Type.UNLOAD, leg.getUnloadLocation(), leg.getVoyage());
                     }
                 }
 
@@ -218,12 +218,12 @@ public class Delivery implements ValueObject<Delivery> {
             case UNLOAD -> {
                 for (Iterator<Leg> it = itinerary.legs().iterator(); it.hasNext(); ) {
                     final Leg leg = it.next();
-                    if (leg.unloadLocation().sameIdentityAs(lastEvent.getLocation())) {
+                    if (leg.getUnloadLocation().sameIdentityAs(lastEvent.getLocation())) {
                         if (it.hasNext()) {
                             final Leg nextLeg = it.next();
-                            yield new HandlingActivity(HandlingEvent.Type.LOAD, nextLeg.loadLocation(), nextLeg.voyage());
+                            yield new HandlingActivity(HandlingEvent.Type.LOAD, nextLeg.getLoadLocation(), nextLeg.getVoyage());
                         } else {
-                            yield new HandlingActivity(HandlingEvent.Type.CLAIM, leg.unloadLocation());
+                            yield new HandlingActivity(HandlingEvent.Type.CLAIM, leg.getUnloadLocation());
                         }
                     }
                 }
@@ -232,7 +232,7 @@ public class Delivery implements ValueObject<Delivery> {
             }
             case RECEIVE -> {
                 final Leg firstLeg = itinerary.legs().iterator().next();
-                yield new HandlingActivity(HandlingEvent.Type.LOAD, firstLeg.loadLocation(), firstLeg.voyage());
+                yield new HandlingActivity(HandlingEvent.Type.LOAD, firstLeg.getLoadLocation(), firstLeg.getVoyage());
             }
             default -> NO_ACTIVITY;
         };

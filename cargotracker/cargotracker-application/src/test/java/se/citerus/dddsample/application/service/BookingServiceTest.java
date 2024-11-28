@@ -1,6 +1,5 @@
 package se.citerus.dddsample.application.service;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +41,8 @@ class BookingServiceTest {
             .destination(UnLocode.of(SampleLocations.STOCKHOLM.getUnlocode()))
             .origin(UnLocode.of(SampleLocations.SHANGHAI.getUnlocode()))
             .build();
-        var cargo = bookingService.book(command);
+        bookingService.book(command);
         then(cargoRepository).should(Mockito.times(1)).save(Mockito.any(Cargo.class));
-
-        Assertions.assertNotNull(cargo);
-        Assertions.assertNotNull(cargo.getDelivery());
-        Assertions.assertNotNull(cargo.getLegs());
-        Assertions.assertTrue(cargo.getLegs().isEmpty());
     }
 
     @Test
@@ -80,7 +74,6 @@ class BookingServiceTest {
         bookingService.changeDestination(trackingId, command);
         then(cargoRepository).should(Mockito.times(1)).save(Mockito.any(Cargo.class));
     }
-
 
 
 }

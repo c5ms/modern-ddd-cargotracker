@@ -25,8 +25,8 @@ public final class CarrierMovement implements ValueObject<CarrierMovement> {
     // Null object pattern
     @Transient
     public static final CarrierMovement NONE = new CarrierMovement(
-        Location.unknown(),
-        Location.unknown(),
+        Location.UNKNOWN,
+        Location.UNKNOWN,
         Instant.ofEpochMilli(0), 
         Instant.ofEpochMilli(0)
     );

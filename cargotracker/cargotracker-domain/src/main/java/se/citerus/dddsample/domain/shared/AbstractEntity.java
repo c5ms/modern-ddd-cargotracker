@@ -15,7 +15,7 @@ public abstract class AbstractEntity {
     private transient final @Transient Map<Class<?>, DomainEvent> domainEvents = new HashMap<>();
 
     @DomainEvents
-    protected Collection<DomainEvent> events() {
+    public Collection<DomainEvent> events() {
         return domainEvents.values();
     }
 

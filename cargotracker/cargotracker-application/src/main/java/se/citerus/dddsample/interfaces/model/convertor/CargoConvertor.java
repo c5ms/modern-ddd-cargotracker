@@ -65,7 +65,6 @@ public class CargoConvertor {
 
     public CargoDto toDto(Cargo cargo) {
         return new CargoDto()
-            .setRouted(cargo.isRouted())
             .setTrackingId(cargo.getTrackingId())
             .setOrigin(cargo.getRouteSpecification().getOrigin().getUnlocode())
             .setDestination(cargo.getRouteSpecification().getDestination().getUnlocode())

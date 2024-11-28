@@ -59,7 +59,7 @@ public class HandlingHistory implements ValueObject<HandlingHistory> {
      */
     public HandlingHistory filterOnCargo(TrackingId trackingId) {
         List<HandlingEvent> events = handlingEvents.stream()
-            .filter(he -> he.getCargo().trackingId().sameValueAs(trackingId))
+            .filter(he -> he.getCargo().getTrackingId().sameValueAs(trackingId))
             .collect(Collectors.toList());
         return new HandlingHistory(events);
     }
