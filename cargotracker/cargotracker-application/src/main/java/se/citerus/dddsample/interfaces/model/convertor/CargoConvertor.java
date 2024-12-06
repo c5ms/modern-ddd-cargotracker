@@ -65,7 +65,7 @@ public class CargoConvertor {
 
     public CargoDto toDto(Cargo cargo) {
         return new CargoDto()
-            .setTrackingId(cargo.getTrackingId())
+            .setTrackingId(cargo.getTrackingId().getId())
             .setOrigin(cargo.getRouteSpecification().getOrigin().getUnlocode())
             .setDestination(cargo.getRouteSpecification().getDestination().getUnlocode())
             .setArrivalDeadline(cargo.getRouteSpecification().getArrivalDeadline())
