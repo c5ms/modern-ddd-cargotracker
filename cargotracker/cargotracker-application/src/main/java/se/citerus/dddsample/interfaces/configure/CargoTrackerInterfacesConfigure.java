@@ -40,7 +40,6 @@ class CargoTrackerInterfacesConfigure {
     public OpenAPI openAPI(CargoTrackerInfrastructureProperties infrastructureProperties) {
         var jsonProperties = infrastructureProperties.getJson();
 
-
         SpringDocUtils.getConfig().replaceWithSchema(LocalDate.class, new Schema<LocalDate>()
             .type("string")
             .format(jsonProperties.getTimeFormat())

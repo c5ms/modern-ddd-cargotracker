@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import se.citerus.dddsample.application.service.HandlingReportReceiver;
 import se.citerus.dddsample.domain.model.handling.HandlingEvent;
@@ -32,7 +33,7 @@ class ReportResourceTest {
     HandlingReportReceiver handlingReportReceiver;
 
     @Autowired
-    private ObjectMapper jacksonObjectMapper;
+    ObjectMapper jacksonObjectMapper;
 
     @Test
     void list_shouldReturnAccepted() throws Exception {

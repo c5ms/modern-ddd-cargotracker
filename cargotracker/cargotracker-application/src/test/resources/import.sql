@@ -1,0 +1,30 @@
+INSERT INTO voyage (voyage_number) VALUES ('0100S');
+INSERT INTO voyage (voyage_number) VALUES ('0200T');
+INSERT INTO voyage (voyage_number) VALUES ('0300A');
+INSERT INTO voyage (voyage_number) VALUES ('0301S');
+INSERT INTO voyage (voyage_number) VALUES ('0400S');
+INSERT INTO voyage (voyage_number) VALUES ('CM001');
+INSERT INTO voyage (voyage_number) VALUES ('CM002');
+INSERT INTO voyage (voyage_number) VALUES ('CM003');
+INSERT INTO voyage (voyage_number) VALUES ('CM004');
+INSERT INTO voyage (voyage_number) VALUES ('CM005');
+INSERT INTO voyage (voyage_number) VALUES ('CM006');
+INSERT INTO voyage (voyage_number) VALUES ('V100');
+INSERT INTO voyage (voyage_number) VALUES ('V200');
+INSERT INTO voyage (voyage_number) VALUES ('V300');
+INSERT INTO voyage (voyage_number) VALUES ('V400');
+
+
+INSERT INTO location (name, unlocode) VALUES ('Tokyo', 'JNTKO');
+INSERT INTO location (name, unlocode) VALUES ('Rotterdam', 'NLRTM');
+INSERT INTO location (name, unlocode) VALUES ('Dallas', 'USDAL');
+INSERT INTO location (name, unlocode) VALUES ('Göteborg', 'SEGOT');
+INSERT INTO location (name, unlocode) VALUES ('Hangzhou', 'CNHGH');
+INSERT INTO location (name, unlocode) VALUES ('Hongkong', 'CNHKG');
+INSERT INTO location (name, unlocode) VALUES ('Hamburg', 'DEHAM');
+INSERT INTO location (name, unlocode) VALUES ('Stockholm', 'SESTO');
+INSERT INTO location (name, unlocode) VALUES ('New York', 'USNYC');
+INSERT INTO location (name, unlocode) VALUES ('Helsinki', 'FIHEL');
+INSERT INTO location (name, unlocode) VALUES ('Chicago', 'USCHI');
+INSERT INTO location (name, unlocode) VALUES ('Shanghai', 'CNSHA');
+INSERT INTO location (name, unlocode) VALUES ('Melbourne', 'AUMEL');

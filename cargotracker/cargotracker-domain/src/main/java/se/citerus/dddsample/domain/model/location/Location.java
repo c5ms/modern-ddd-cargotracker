@@ -20,7 +20,7 @@ import se.citerus.dddsample.domain.shared.DomainEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Location implements DomainEntity<Location> {
 
-    public  static final Location UNKNOWN=new Location("XXXXX", "Unknown location");
+    public static final Location UNKNOWN = new Location("XXXXX", "Unknown location");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,7 +76,7 @@ public class Location implements DomainEntity<Location> {
 
     @Override
     public boolean sameIdentityAs(final Location other) {
-        if(null==other){
+        if (null == other) {
             return false;
         }
         return this.unlocode.equals(other.unlocode);

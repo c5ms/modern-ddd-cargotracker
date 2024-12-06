@@ -16,7 +16,7 @@ public class CargoTrackerApplicationProperties {
 
     @Data
     public static class HandlingEvent {
-        private HandlingEventProcessStrategy strategy;
+        private HandlingEventProcessStrategy strategy = HandlingEventProcessStrategy.QUEUED;
     }
 
 }
