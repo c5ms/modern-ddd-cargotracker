@@ -11,12 +11,6 @@ public class CargoTrackerInfrastructureProperties {
 
     private final Json json = new Json();
 
-    private final Sample sample = new Sample();
-
-    @Data
-    public static class Sample {
-    }
-
     @Data
     public static class Json {
         private String yearMonthFormat = "yyyy-MM";

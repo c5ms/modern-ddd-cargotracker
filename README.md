@@ -1,4 +1,6 @@
-# DDDSample 
+# DDDSample
+[![Java CI with Maven](https://github.com/c5ms/ddd-sample-cargotracker/actions/workflows/maven.yml/badge.svg)](https://github.com/c5ms/ddd-sample-cargotracker/actions/workflows/maven.yml)
+
 
 ## Technic stack
 - Spring boot 3
