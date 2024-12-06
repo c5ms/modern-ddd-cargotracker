@@ -12,7 +12,7 @@ import java.time.Instant;
 public class TestCargoGenerator {
 
     public Cargo emptyCargo() {
-        return Cargo.of(TrackingId.of("T001"), fromLocation(),  toLocation(), Instant.now());
+        return Cargo.of(TrackingId.of("T001"), fromLocation(), toLocation(), Instant.now());
     }
 
     public Location fromLocation() {

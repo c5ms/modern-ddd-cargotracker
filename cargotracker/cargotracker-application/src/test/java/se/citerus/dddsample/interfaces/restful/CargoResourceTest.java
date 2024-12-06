@@ -10,7 +10,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import se.citerus.dddsample.application.service.BookingService;
 import se.citerus.dddsample.domain.model.cargo.CargoFinder;
-import se.citerus.dddsample.utils.TestCargoGenerator;
 import se.citerus.dddsample.domain.model.cargo.TrackingId;
 import se.citerus.dddsample.domain.model.cargo.UnknownCargoException;
 import se.citerus.dddsample.infrastructure.initialize.SampleLocations;
@@ -18,6 +17,7 @@ import se.citerus.dddsample.infrastructure.initialize.SampleVoyages;
 import se.citerus.dddsample.interfaces.model.request.CargoAssignRouteRequest;
 import se.citerus.dddsample.interfaces.model.request.CargoDestinationChangeRequest;
 import se.citerus.dddsample.interfaces.model.request.CargoRegisterRequest;
+import se.citerus.dddsample.utils.TestCargoGenerator;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -43,6 +43,27 @@ class CargoResourceTest {
     @MockitoBean
     BookingService bookingService;
 
+    private static CargoDestinationChangeRequest createCargoDestinationChangeRequest() {
+        return new CargoDestinationChangeRequest()
+            .setDestination(SampleLocations.STOCKHOLM.getUnlocode());
+    }
+
+    private static CargoRegisterRequest createCargoRegisterRequest() {
+        return new CargoRegisterRequest()
+            .setArrivalDeadline(LocalDate.now().plusDays(1))
+            .setOriginUnlocode(SampleLocations.HAMBURG.getUnlocode())
+            .setDestinationUnlocode(SampleLocations.STOCKHOLM.getUnlocode());
+    }
+
+    private static CargoAssignRouteRequest createCargoAssignRouteRequest() {
+        return new CargoAssignRouteRequest()
+            .setLegs(List.of(new CargoAssignRouteRequest.Leg()
+                .setFromDate(LocalDate.now())
+                .setToDate(LocalDate.now().plusDays(1))
+                .setFromUnLocode(SampleLocations.HAMBURG.getUnlocode())
+                .setToUnLocode(SampleLocations.STOCKHOLM.getUnlocode())
+                .setVoyageNumber(SampleVoyages.CM005.getVoyageNumber())));
+    }
 
     @Test
     void list_shouldReturnOK() throws Exception {
@@ -74,7 +95,6 @@ class CargoResourceTest {
             ).andExpect(status().isCreated());
     }
 
-
     @Test
     void assignItinerary_shouldReturnOk() throws Exception {
         when(cargoFinder.require(any())).thenReturn(TestCargoGenerator.emptyCargo());
@@ -101,7 +121,6 @@ class CargoResourceTest {
             .andExpect(status().isNotFound());
     }
 
-
     @Test
     void changeDestination_shouldReturnOk() throws Exception {
         when(cargoFinder.require(any())).thenReturn(TestCargoGenerator.emptyCargo());
@@ -114,9 +133,6 @@ class CargoResourceTest {
             ).andExpect(status().isOk());
     }
 
-
-
-
     @Test
     void changeDestination_shouldReturnNotFoundWhenThrowUnknownCargoException() throws Exception {
         when(cargoFinder.require(any())).thenThrow(new UnknownCargoException(TrackingId.of("001")));
@@ -127,30 +143,6 @@ class CargoResourceTest {
                     .content(objectMapper.writeValueAsString(request))
                     .contentType(MediaType.APPLICATION_JSON)
             ).andExpect(status().isNotFound());
-    }
-
-
-    private static CargoDestinationChangeRequest createCargoDestinationChangeRequest() {
-        return new CargoDestinationChangeRequest()
-            .setDestination(SampleLocations.STOCKHOLM.getUnlocode());
-    }
-
-    private static CargoRegisterRequest createCargoRegisterRequest() {
-        return new CargoRegisterRequest()
-            .setArrivalDeadline(LocalDate.now().plusDays(1))
-            .setOriginUnlocode(SampleLocations.HAMBURG.getUnlocode())
-            .setDestinationUnlocode(SampleLocations.STOCKHOLM.getUnlocode());
-    }
-
-
-    private static CargoAssignRouteRequest createCargoAssignRouteRequest() {
-        return new CargoAssignRouteRequest()
-            .setLegs(List.of(new CargoAssignRouteRequest.Leg()
-                .setFromDate(LocalDate.now())
-                .setToDate(LocalDate.now().plusDays(1))
-                .setFromUnLocode(SampleLocations.HAMBURG.getUnlocode())
-                .setToUnLocode(SampleLocations.STOCKHOLM.getUnlocode())
-                .setVoyageNumber(SampleVoyages.CM005.getVoyageNumber())));
     }
 
 }
