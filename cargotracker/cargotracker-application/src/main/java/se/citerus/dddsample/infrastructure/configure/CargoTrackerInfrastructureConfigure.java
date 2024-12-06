@@ -78,12 +78,12 @@ class CargoTrackerInfrastructureConfigure {
             );
     }
 
-    @Bean
-    public SampleDataInitializer sampleDataInitializer(LocationRepository locationRepository, VoyageRepository voyageRepository) {
-        if (properties.getSample().isInitializeSampleData()) {
-            return new SampleDataInitializer(locationRepository, voyageRepository);
-        }
-        return null;
-    }
+//    @Bean
+//    public SampleDataInitializer sampleDataInitializer(LocationRepository locationRepository, VoyageRepository voyageRepository) {
+//        if (properties.getSample().isInitializeSampleData()) {
+//            return new SampleDataInitializer(locationRepository, voyageRepository);
+//        }
+//        return null;
+//    }
 
 }

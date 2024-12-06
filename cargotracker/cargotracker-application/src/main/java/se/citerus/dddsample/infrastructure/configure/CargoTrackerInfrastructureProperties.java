@@ -15,7 +15,6 @@ public class CargoTrackerInfrastructureProperties {
 
     @Data
     public static class Sample {
-        private boolean initializeSampleData = false;
     }
 
     @Data
