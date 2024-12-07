@@ -13,6 +13,7 @@ import se.citerus.dddsample.domain.model.handling.HandlingEventFactory;
 import se.citerus.dddsample.domain.model.handling.HandlingEventRepository;
 import se.citerus.dddsample.domain.model.handling.HandlingReport;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
@@ -40,10 +41,15 @@ class DefaultHandlingReportProcessorTest {
         given(report.getTrackingId()).willReturn(TrackingId.of("001"));
         given(handlingEventFactory.createHandlingEvent(report)).willReturn(event);
 
-        var command = HandlingReportProcessCommand.builder().report(report).build();
-        handlingReportProcessor.processHandingEvent(command);
+        handlingReportProcessor.processHandingEvent(
+            HandlingReportProcessCommand.builder()
+                .report(report)
+                .build()
+        );
 
-        then(applicationEventMessageSender).should(times(1)).send(Mockito.eq(CargoHandledEvent.of("001")));
+        then(applicationEventMessageSender).should(times(1)).send(Mockito.assertArg(applicationEvent -> {
+            assertThat(applicationEvent).isEqualTo(CargoHandledEvent.of("001"));
+        }));
         then(handlingEventRepository).should(times(1)).save(event);
 
     }

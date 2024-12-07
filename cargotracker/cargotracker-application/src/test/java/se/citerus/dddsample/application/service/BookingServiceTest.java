@@ -1,5 +1,6 @@
 package se.citerus.dddsample.application.service;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +11,14 @@ import se.citerus.dddsample.application.command.CargoDestinationChangeCommand;
 import se.citerus.dddsample.application.command.CargoRegisterCommand;
 import se.citerus.dddsample.application.service.impl.DefaultBookingService;
 import se.citerus.dddsample.domain.model.cargo.*;
+import se.citerus.dddsample.domain.model.handling.HandlingHistory;
 import se.citerus.dddsample.domain.model.location.LocationFinder;
 import se.citerus.dddsample.domain.model.location.UnLocode;
 import se.citerus.dddsample.infrastructure.initialize.SampleLocations;
 
 import java.time.Instant;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
@@ -55,7 +58,13 @@ class BookingServiceTest {
         bookingService.book(command);
 
         then(trackingIdGenerator).should(times(1)).next();
-        then(cargoRepository).should(times(1)).save(Mockito.argThat(cargo -> cargo.getTrackingId().equals(trackingId)));
+        then(cargoRepository).should(times(1)).save(Mockito.assertArg(cargo -> {
+            assertThat(cargo).isNotNull();
+            assertThat(cargo.getTrackingId()).isEqualTo(trackingId);
+            assertThat(cargo.getRouteSpecification()).extracting(RouteSpecification::getOrigin).isEqualTo(SampleLocations.STOCKHOLM);
+            assertThat(cargo.getRouteSpecification()).extracting(RouteSpecification::getDestination).isEqualTo(SampleLocations.SHANGHAI);
+            assertThat(cargo.getRouteSpecification()).extracting(RouteSpecification::getArrivalDeadline).isEqualTo(command.getArrivalDeadline());
+        }));
     }
 
     @Test

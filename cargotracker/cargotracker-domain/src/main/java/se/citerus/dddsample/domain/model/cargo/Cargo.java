@@ -23,7 +23,6 @@ import java.time.Instant;
 public class Cargo extends AbstractEntity implements DomainEntity<Cargo> {
 
     @Id
-    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
