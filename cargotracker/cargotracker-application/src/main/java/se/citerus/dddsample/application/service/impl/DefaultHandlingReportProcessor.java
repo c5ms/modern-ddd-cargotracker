@@ -16,8 +16,8 @@ import se.citerus.dddsample.domain.model.handling.HandlingEventRepository;
 @RequiredArgsConstructor
 public class DefaultHandlingReportProcessor implements HandlingReportProcessor {
 
-    private final ApplicationEventMessageSender applicationEventMessageSender;
     private final HandlingEventFactory handlingEventFactory;
+    private final ApplicationEventMessageSender applicationEventMessageSender;
     private final HandlingEventRepository handlingEventRepository;
 
     @Override
@@ -27,7 +27,7 @@ public class DefaultHandlingReportProcessor implements HandlingReportProcessor {
         var report = command.getReport();
         final HandlingEvent event = handlingEventFactory.createHandlingEvent(report);
         handlingEventRepository.save(event);
-        applicationEventMessageSender.send(CargoHandledEvent.of(command.getReport().getTrackingId().getId()));
+        applicationEventMessageSender.send(CargoHandledEvent.of(report.getTrackingId().getId()));
     }
 
 }

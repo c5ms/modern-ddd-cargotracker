@@ -1,6 +1,5 @@
 package se.citerus.dddsample.domain.model.cargo;
 
-import lombok.experimental.FieldNameConstants;
 import org.junit.jupiter.api.Test;
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.model.location.UnLocode;
@@ -17,8 +16,8 @@ class CargoTest {
     @Test
     void identity() {
         var arrivalDeadline = Instant.now().plus(1, ChronoUnit.DAYS);
-        var cargo1=Cargo.of( TrackingId.of("001"), FIHEL, CNSHA, arrivalDeadline);
-        var cargo2=Cargo.of( TrackingId.of("001"),FIHEL, CNSHA, arrivalDeadline);
+        var cargo1 = Cargo.of(TrackingId.of("001"), FIHEL, CNSHA, arrivalDeadline);
+        var cargo2 = Cargo.of(TrackingId.of("001"), FIHEL, CNSHA, arrivalDeadline);
         assertFalse(cargo1.sameIdentityAs(null));
         assertTrue(cargo1.sameIdentityAs(cargo2));
     }
@@ -43,7 +42,7 @@ class CargoTest {
     void changeDestination() {
         var trackingId = TrackingId.of("001");
         var arrivalDeadline = Instant.now().plus(1, ChronoUnit.DAYS);
-        var cargo = Cargo.of(trackingId,FIHEL, CNSHA, arrivalDeadline);
+        var cargo = Cargo.of(trackingId, FIHEL, CNSHA, arrivalDeadline);
 
         var newDestination = Location.of(UnLocode.of("CNHGH"), "Hangzhou");
         cargo.changeDestination(newDestination);

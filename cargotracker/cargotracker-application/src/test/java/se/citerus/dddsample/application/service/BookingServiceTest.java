@@ -10,17 +10,16 @@ import se.citerus.dddsample.application.command.CargoDestinationChangeCommand;
 import se.citerus.dddsample.application.command.CargoRegisterCommand;
 import se.citerus.dddsample.application.service.impl.DefaultBookingService;
 import se.citerus.dddsample.domain.model.cargo.*;
+import se.citerus.dddsample.domain.model.location.LocationFinder;
 import se.citerus.dddsample.domain.model.location.UnLocode;
 import se.citerus.dddsample.infrastructure.initialize.SampleLocations;
-import se.citerus.dddsample.infrastructure.initialize.SampleVoyages;
-import se.citerus.dddsample.utils.TestCargoGenerator;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 
 @SpringBootTest
 class BookingServiceTest {
@@ -34,45 +33,64 @@ class BookingServiceTest {
     @MockitoBean
     CargoFinder cargoFinder;
 
+    @MockitoBean
+    LocationFinder locationFinder;
+
+    @MockitoBean
+    TrackingIdGenerator trackingIdGenerator;
+
     @Test
     public void book() {
+        var trackingId = TrackingId.of("001");
         var command = CargoRegisterCommand.builder()
             .arrivalDeadline(Instant.now())
             .destination(UnLocode.of(SampleLocations.STOCKHOLM.getUnlocode()))
             .origin(UnLocode.of(SampleLocations.SHANGHAI.getUnlocode()))
             .build();
+
+        given(locationFinder.require(command.getOrigin())).willReturn(SampleLocations.STOCKHOLM);
+        given(locationFinder.require(command.getDestination())).willReturn(SampleLocations.SHANGHAI);
+        given(trackingIdGenerator.next()).willReturn(trackingId);
+
         bookingService.book(command);
-        then(cargoRepository).should(Mockito.times(1)).save(Mockito.any(Cargo.class));
+
+        then(trackingIdGenerator).should(times(1)).next();
+        then(cargoRepository).should(times(1)).save(Mockito.argThat(cargo -> cargo.getTrackingId().equals(trackingId)));
     }
 
     @Test
     public void assignRoute() {
         var trackingId = TrackingId.of("001");
+        var cargo = mock(Cargo.class);
+        var itinerary = mock(Itinerary.class);
         var command = CargoAssignRouteCommand.builder()
-            .itinerary(Itinerary.of(
-                List.of(
-                    Leg.of(SampleVoyages.CM005,
-                        TestCargoGenerator.fromLocation(),
-                        TestCargoGenerator.toLocation(),
-                        Instant.now(),
-                        Instant.now().plus(1, ChronoUnit.DAYS))
-                )))
+            .itinerary(itinerary)
             .build();
 
-        given(cargoFinder.require(trackingId)).willReturn(TestCargoGenerator.emptyCargo());
+        given(cargoFinder.require(trackingId)).willReturn(cargo);
+
         bookingService.assignRoute(trackingId, command);
-        then(cargoRepository).should(Mockito.times(1)).save(Mockito.any(Cargo.class));
+
+        then(cargo).should(times(1)).assignToRoute(command.getItinerary());
+        then(cargoRepository).should(times(1)).save(cargo);
     }
 
     @Test
     public void changeDestination() {
+        var changeLocation = SampleLocations.DALLAS;
+        var cargo = mock(Cargo.class);
         var trackingId = TrackingId.of("001");
         var command = CargoDestinationChangeCommand.builder()
-            .destination(UnLocode.of(TestCargoGenerator.changeLocation().getUnlocode()))
+            .destination(UnLocode.of(changeLocation.getUnlocode()))
             .build();
-        given(cargoFinder.require(trackingId)).willReturn(TestCargoGenerator.emptyCargo());
+
+        given(cargoFinder.require(trackingId)).willReturn(cargo);
+        given(locationFinder.require(command.getDestination())).willReturn(changeLocation);
+
         bookingService.changeDestination(trackingId, command);
-        then(cargoRepository).should(Mockito.times(1)).save(Mockito.any(Cargo.class));
+
+        then(cargo).should(times(1)).changeDestination(changeLocation);
+        then(cargoRepository).should(times(1)).save(cargo);
     }
 
 

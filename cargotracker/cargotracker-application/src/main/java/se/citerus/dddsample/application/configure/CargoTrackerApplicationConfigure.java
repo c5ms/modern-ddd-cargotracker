@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
+import se.citerus.dddsample.application.service.HandlingReportProcessor;
 import se.citerus.dddsample.application.service.HandlingReportReceiver;
 import se.citerus.dddsample.application.service.impl.HandlingReportMessageSender;
 import se.citerus.dddsample.application.service.impl.QueuedHandlingReportReceiver;
@@ -31,7 +32,7 @@ class CargoTrackerApplicationConfigure {
             case THREAD_POOLED -> {
                 return new ThreadPooledHandlingReportReceiver(
                     applicationContext.getBean(TaskExecutor.class),
-                    applicationContext.getBean(ApplicationEventPublisher.class)
+                    applicationContext.getBean(HandlingReportProcessor.class)
                 );
             }
         }

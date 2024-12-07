@@ -11,7 +11,7 @@ import se.citerus.dddsample.infrastructure.initialize.SampleLocations;
 
 import java.util.List;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,7 +27,7 @@ class LocationResourceTest {
 
     @Test
     void list_shouldReturnOK() throws Exception {
-        when(locationFinder.listAll()).thenReturn(List.of(SampleLocations.HAMBURG));
+        given(locationFinder.listAll()).willReturn(List.of(SampleLocations.HAMBURG));
         this.mockMvc.perform(get("/locations")).andExpect(status().isOk());
     }
 
