@@ -8,7 +8,7 @@ import se.citerus.dddsample.domain.model.handling.HandlingReport;
 
 @Slf4j
 @RequiredArgsConstructor
-public class QueuedHandlingReportReceiver implements HandlingReportReceiver {
+public class MessageHandlingReportReceiver implements HandlingReportReceiver {
     private final HandlingReportMessageSender handlingReportMessageSender;
 
     @Override

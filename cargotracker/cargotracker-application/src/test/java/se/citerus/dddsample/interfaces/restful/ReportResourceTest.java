@@ -10,8 +10,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import se.citerus.dddsample.application.service.HandlingReportReceiver;
 import se.citerus.dddsample.domain.model.handling.HandlingEvent;
-import se.citerus.dddsample.infrastructure.initialize.SampleLocations;
-import se.citerus.dddsample.infrastructure.initialize.SampleVoyages;
+import se.citerus.dddsample.sample.SampleLocations;
+import se.citerus.dddsample.sample.SampleVoyages;
 import se.citerus.dddsample.interfaces.model.dto.HandlingReportDto;
 
 import java.time.LocalDateTime;

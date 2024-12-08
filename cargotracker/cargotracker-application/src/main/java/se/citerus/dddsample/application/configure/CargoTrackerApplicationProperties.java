@@ -7,16 +7,20 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "cargotracker.application")
 public class CargoTrackerApplicationProperties {
 
-    private final HandlingEvent handlingEvent = new HandlingEvent();
+    private final HandlingReport handingReport = new HandlingReport();
 
-    public enum HandlingEventProcessStrategy {
-        QUEUED,
-        THREAD_POOLED
+    public enum HandlingReportProcessStrategy {
+        MESSAGE,
+        THREAD,
+        /**
+         * for test
+         */
+        INTERNAL
     }
 
     @Data
-    public static class HandlingEvent {
-        private HandlingEventProcessStrategy strategy = HandlingEventProcessStrategy.QUEUED;
+    public static class HandlingReport {
+        private HandlingReportProcessStrategy processStrategy = HandlingReportProcessStrategy.INTERNAL;
     }
 
 }

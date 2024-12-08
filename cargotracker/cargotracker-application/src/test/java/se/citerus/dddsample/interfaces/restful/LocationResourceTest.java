@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import se.citerus.dddsample.domain.model.location.LocationFinder;
-import se.citerus.dddsample.infrastructure.initialize.SampleLocations;
+import se.citerus.dddsample.sample.SampleLocations;
 
 import java.util.List;
 

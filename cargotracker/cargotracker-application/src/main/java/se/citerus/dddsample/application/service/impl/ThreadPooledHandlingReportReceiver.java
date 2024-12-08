@@ -10,6 +10,8 @@ import se.citerus.dddsample.application.service.HandlingReportProcessor;
 import se.citerus.dddsample.application.service.HandlingReportReceiver;
 import se.citerus.dddsample.domain.model.handling.HandlingReport;
 
+import java.util.concurrent.Semaphore;
+
 @Slf4j
 @RequiredArgsConstructor
 public class ThreadPooledHandlingReportReceiver implements HandlingReportReceiver {

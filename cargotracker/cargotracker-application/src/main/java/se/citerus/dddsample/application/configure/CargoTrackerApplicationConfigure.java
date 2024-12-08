@@ -1,42 +1,46 @@
 package se.citerus.dddsample.application.configure;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import se.citerus.dddsample.application.service.HandlingReportProcessor;
 import se.citerus.dddsample.application.service.HandlingReportReceiver;
-import se.citerus.dddsample.application.service.impl.HandlingReportMessageSender;
-import se.citerus.dddsample.application.service.impl.QueuedHandlingReportReceiver;
-import se.citerus.dddsample.application.service.impl.ThreadPooledHandlingReportReceiver;
+import se.citerus.dddsample.application.service.impl.*;
 
 
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties({CargoTrackerApplicationProperties.class})
 @RequiredArgsConstructor
-class CargoTrackerApplicationConfigure {
-
-    private final CargoTrackerApplicationProperties cargoTrackerApplicationProperties;
+public class CargoTrackerApplicationConfigure {
 
     @Bean
-    HandlingReportReceiver handlingEventReceiver(ApplicationContext applicationContext) {
-        switch (cargoTrackerApplicationProperties.getHandlingEvent().getStrategy()) {
-            case QUEUED -> {
-                return new QueuedHandlingReportReceiver(
-                    applicationContext.getBean(HandlingReportMessageSender.class)
-                );
-            }
-            case THREAD_POOLED -> {
-                return new ThreadPooledHandlingReportReceiver(
-                    applicationContext.getBean(TaskExecutor.class),
-                    applicationContext.getBean(HandlingReportProcessor.class)
-                );
-            }
-        }
-        throw new IllegalStateException("unknown how to config HandlingEventReceiver");
+    @ConditionalOnProperty(prefix = "cargotracker.application", name = "handing-report.process-strategy", havingValue = "THREAD")
+    HandlingReportReceiver threadPooledHandlingReportReceiver(TaskExecutor taskExecutor, HandlingReportProcessor processor) {
+        return new ThreadPooledHandlingReportReceiver(taskExecutor, processor);
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "cargotracker.application", name = "handing-report.process-strategy", havingValue = "MESSAGE")
+    HandlingReportReceiver queuedHandlingReportReceiver(HandlingReportMessageSender sender) {
+        return new MessageHandlingReportReceiver(sender);
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "cargotracker.application", name = "handing-report.process-strategy", havingValue = "INTERNAL")
+    HandlingReportReceiver internalReportReceiver(HandlingReportProcessor handlingReportProcessor) {
+        return new InternalHandlingReportReceiver(handlingReportProcessor);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(ApplicationEventMessageSender.class)
+    ApplicationEventMessageSender applicationEventMessageSender(ApplicationEventPublisher publisher) {
+        return new InternalApplicationEventMessageSender(publisher);
     }
 
 }

@@ -18,7 +18,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
-@SpringBootTest
+@SpringBootTest(
+    classes = DefaultHandlingReportProcessor.class
+)
 class DefaultHandlingReportProcessorTest {
 
     @Autowired

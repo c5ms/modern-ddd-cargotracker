@@ -13,7 +13,6 @@ import se.citerus.dddsample.domain.shared.DomainEvent;
 
 /**
  * event driven for cargo domain
- * note: this is not using for application event (application integration)
  */
 @Slf4j
 @Component

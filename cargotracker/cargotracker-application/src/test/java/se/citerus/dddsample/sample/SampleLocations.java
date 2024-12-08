@@ -1,13 +1,7 @@
-package se.citerus.dddsample.infrastructure.initialize;
+package se.citerus.dddsample.sample;
 
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.model.location.UnLocode;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Sample locations, for test purposes.
@@ -27,28 +21,5 @@ public class SampleLocations {
     public static final Location HANGZHOU =Location.of(UnLocode.of("CNHGH"), "Hangzhou");
     public static final Location NEWYORK =Location.of(UnLocode.of("USNYC"), "New York");
     public static final Location DALLAS =Location.of(UnLocode.of("USDAL"), "Dallas");
-
-    public static final Map<UnLocode, Location> ALL = new HashMap<>();
-
-    static {
-        for (Field field : SampleLocations.class.getDeclaredFields()) {
-            if (field.getType().equals(Location.class)) {
-                try {
-                    Location location = (Location) field.get(null);
-                    ALL.put(UnLocode.of(location.getUnlocode()), location);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
-
-    public static List<Location> getAll() {
-        return new ArrayList<>(ALL.values());
-    }
-
-    public static Location lookup(UnLocode unLocode) {
-        return ALL.get(unLocode);
-    }
 
 }

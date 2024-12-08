@@ -14,8 +14,8 @@ import se.citerus.dddsample.domain.model.cargo.Cargo;
 import se.citerus.dddsample.domain.model.cargo.CargoFinder;
 import se.citerus.dddsample.domain.model.cargo.TrackingId;
 import se.citerus.dddsample.domain.model.cargo.UnknownCargoException;
-import se.citerus.dddsample.infrastructure.initialize.SampleLocations;
-import se.citerus.dddsample.infrastructure.initialize.SampleVoyages;
+import se.citerus.dddsample.sample.SampleLocations;
+import se.citerus.dddsample.sample.SampleVoyages;
 import se.citerus.dddsample.interfaces.model.request.CargoAssignRouteRequest;
 import se.citerus.dddsample.interfaces.model.request.CargoDestinationChangeRequest;
 import se.citerus.dddsample.interfaces.model.request.CargoRegisterRequest;
@@ -48,12 +48,10 @@ class CargoResourceTest {
 
     Cargo cargo;
 
-
     @BeforeEach
     void setUp() {
         cargo = Cargo.of(TrackingId.of("T001"), SampleLocations.STOCKHOLM, SampleLocations.TOKYO, Instant.now());
     }
-
 
 
     private static CargoAssignRouteRequest createCargoAssignRouteRequest() {

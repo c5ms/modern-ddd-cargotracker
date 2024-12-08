@@ -1,6 +1,5 @@
-package se.citerus.dddsample.application.service;
+package se.citerus.dddsample.application.service.impl;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +8,10 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import se.citerus.dddsample.application.command.CargoAssignRouteCommand;
 import se.citerus.dddsample.application.command.CargoDestinationChangeCommand;
 import se.citerus.dddsample.application.command.CargoRegisterCommand;
-import se.citerus.dddsample.application.service.impl.DefaultBookingService;
 import se.citerus.dddsample.domain.model.cargo.*;
-import se.citerus.dddsample.domain.model.handling.HandlingHistory;
 import se.citerus.dddsample.domain.model.location.LocationFinder;
 import se.citerus.dddsample.domain.model.location.UnLocode;
-import se.citerus.dddsample.infrastructure.initialize.SampleLocations;
+import se.citerus.dddsample.sample.SampleLocations;
 
 import java.time.Instant;
 
@@ -24,8 +21,10 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
-@SpringBootTest
-class BookingServiceTest {
+@SpringBootTest(
+    classes = DefaultBookingService.class
+)
+class DefaultBookingServiceTest {
 
     @Autowired
     DefaultBookingService bookingService;

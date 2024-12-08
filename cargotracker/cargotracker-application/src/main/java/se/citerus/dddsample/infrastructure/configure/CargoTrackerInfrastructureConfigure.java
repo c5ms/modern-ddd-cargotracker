@@ -21,9 +21,6 @@ import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilde
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import se.citerus.dddsample.domain.model.location.LocationRepository;
-import se.citerus.dddsample.domain.model.voyage.VoyageRepository;
-import se.citerus.dddsample.infrastructure.initialize.SampleDataInitializer;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
