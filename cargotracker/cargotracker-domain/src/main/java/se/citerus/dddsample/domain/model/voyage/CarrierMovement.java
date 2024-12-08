@@ -17,7 +17,6 @@ import java.time.Instant;
  */
 @Entity(name = "CarrierMovement")
 @Table(name = "CarrierMovement")
-//@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class CarrierMovement implements ValueObject<CarrierMovement> {
 

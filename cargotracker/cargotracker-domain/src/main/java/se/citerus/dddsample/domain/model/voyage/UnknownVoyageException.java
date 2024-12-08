@@ -13,6 +13,6 @@ public class UnknownVoyageException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return "No voyage with number " + voyageNumber.idString() + " exists in the system";
+        return "No voyage with number " + voyageNumber.getNumber() + " exists in the system";
     }
 }

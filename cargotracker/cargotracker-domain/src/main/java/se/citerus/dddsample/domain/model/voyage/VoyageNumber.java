@@ -1,20 +1,27 @@
 package se.citerus.dddsample.domain.model.voyage;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.Validate;
-import se.citerus.dddsample.domain.shared.ValueObject;
 
 /**
  * Identifies a voyage.
  */
+@Getter
+@Embeddable
 @EqualsAndHashCode
-public class VoyageNumber implements ValueObject<VoyageNumber> {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class VoyageNumber {
 
-    private final String number;
+    @Column(name = "voyage_number", unique = true)
+    private String number;
 
     private VoyageNumber(String number) {
         Validate.notNull(number, "number should not be null");
-
         this.number = number;
     }
 
@@ -22,21 +29,7 @@ public class VoyageNumber implements ValueObject<VoyageNumber> {
         return new VoyageNumber(number);
     }
 
-    @Override
-    public boolean sameValueAs(VoyageNumber other) {
-        if (null == other) {
-            return false;
-        }
-        return this.number.equals(other.number);
+    public static VoyageNumber empty() {
+        return new VoyageNumber("");
     }
-
-    @Override
-    public String toString() {
-        return number;
-    }
-
-    public String idString() {
-        return number;
-    }
-
 }

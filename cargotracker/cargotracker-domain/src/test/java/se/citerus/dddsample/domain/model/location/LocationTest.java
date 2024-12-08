@@ -2,6 +2,7 @@ package se.citerus.dddsample.domain.model.location;
 
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,12 +18,12 @@ class LocationTest {
 
     @Test
     void sameIdentityAs() {
-        var chicago = Location.of(UnLocode.of("USCHI"), "Chicago");
-        chicago.setId(1L);
+        assertThat(Location.of(UnLocode.of("USCHI"), "Chicago")
+            .sameIdentityAs(Location.of(UnLocode.of("USCHI"), "Chicago")))
+            .isTrue();
 
-        var chicago2 = Location.of(UnLocode.of("USCHI"), "Chicago");
-        chicago2.setId(2L);
-
-        assertTrue(chicago.sameIdentityAs(chicago2));
+        assertThat(Location.of(UnLocode.of("USCHI"), "Chicago")
+            .sameIdentityAs(null))
+            .isFalse();
     }
 }

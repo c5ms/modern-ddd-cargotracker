@@ -59,7 +59,7 @@ class CargoTest {
         var arrivalDeadline = Instant.now().plus(1, ChronoUnit.DAYS);
         var cargo = Cargo.of(trackingId, FIHEL, CNSHA, arrivalDeadline);
         var itinerary = Itinerary.of(List.of(
-            Leg.of(Voyage.of(VoyageNumber.of("V0001"), Schedule.EMPTY), FIHEL, CNSHA, Instant.now(), Instant.now())
+            Leg.of(Voyage.of(VoyageNumber.of("V0001"), Schedule.empty()), FIHEL, CNSHA, Instant.now(), Instant.now())
         ));
         cargo.assignToRoute(itinerary);
         assertEquals(RoutingStatus.ROUTED, cargo.getDelivery().getRoutingStatus());

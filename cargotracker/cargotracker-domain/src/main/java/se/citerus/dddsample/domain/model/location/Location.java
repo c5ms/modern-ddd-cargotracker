@@ -51,7 +51,6 @@ public class Location implements DomainEntity<Location> {
         this(UnLocode.of(unlocode), name);
     }
 
-
     public static Location of(final String unLocode, final String name) {
         return new Location(unLocode, name);
     }

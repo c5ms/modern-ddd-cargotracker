@@ -16,7 +16,7 @@ public class DefaultVoyageFinder implements VoyageFinder {
 
     @Override
     public Optional<Voyage> find(VoyageNumber voyageNumber) {
-        return voyageRepository.findByVoyageNumber(voyageNumber.idString());
+        return voyageRepository.findByVoyageNumber(voyageNumber.getNumber());
     }
 
     @Override
