@@ -6,12 +6,12 @@ import org.springframework.core.task.TaskExecutor;
 import se.citerus.dddsample.application.command.HandlingReportProcessCommand;
 import se.citerus.dddsample.application.command.HandlingReportReceiveCommand;
 import se.citerus.dddsample.application.service.HandlingReportProcessor;
-import se.citerus.dddsample.application.service.HandlingReportHandler;
+import se.citerus.dddsample.application.service.HandlingReportReceiver;
 import se.citerus.dddsample.domain.model.handling.HandlingReport;
 
 @Slf4j
 @RequiredArgsConstructor
-public class ThreadPooledHandlingReportHandler implements HandlingReportHandler {
+public class ThreadPooledHandlingReportReceiver implements HandlingReportReceiver {
 
     private final TaskExecutor taskExecutor;
     private final HandlingReportProcessor processor;

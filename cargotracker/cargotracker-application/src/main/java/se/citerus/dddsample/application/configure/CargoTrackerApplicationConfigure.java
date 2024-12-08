@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import se.citerus.dddsample.application.service.HandlingReportProcessor;
-import se.citerus.dddsample.application.service.HandlingReportHandler;
+import se.citerus.dddsample.application.service.HandlingReportReceiver;
 import se.citerus.dddsample.application.service.impl.*;
 
 
@@ -20,20 +20,20 @@ public class CargoTrackerApplicationConfigure {
 
     @Bean
     @ConditionalOnProperty(prefix = "cargotracker.application", name = "handing-report.process-strategy", havingValue = "THREAD")
-    HandlingReportHandler threadPooledHandlingReportReceiver(TaskExecutor taskExecutor, HandlingReportProcessor processor) {
-        return new ThreadPooledHandlingReportHandler(taskExecutor, processor);
+    HandlingReportReceiver threadPooledHandlingReportReceiver(TaskExecutor taskExecutor, HandlingReportProcessor processor) {
+        return new ThreadPooledHandlingReportReceiver(taskExecutor, processor);
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "cargotracker.application", name = "handing-report.process-strategy", havingValue = "MESSAGE")
-    HandlingReportHandler queuedHandlingReportReceiver(HandlingReportMessageSender sender) {
-        return new MessageHandlingReportHandler(sender);
+    HandlingReportReceiver queuedHandlingReportReceiver(HandlingReportMessageSender sender) {
+        return new MessageHandlingReportReceiver(sender);
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "cargotracker.application", name = "handing-report.process-strategy", havingValue = "DIRECT")
-    HandlingReportHandler internalReportReceiver(HandlingReportProcessor handlingReportProcessor) {
-        return new DirectlyHandlingReportHandler(handlingReportProcessor);
+    HandlingReportReceiver internalReportReceiver(HandlingReportProcessor handlingReportProcessor) {
+        return new DirectlyHandlingReportReceiver(handlingReportProcessor);
     }
 
     @Bean
