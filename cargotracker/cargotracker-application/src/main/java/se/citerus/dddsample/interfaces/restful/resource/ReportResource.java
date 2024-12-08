@@ -25,7 +25,7 @@ public class ReportResource {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping
     public void receiveReport(@Validated @RequestBody HandlingReportDto report) {
-        var command = handlingConvertor.toReport(report);
+        var command = handlingConvertor.toCommand(report);
         handlingReportReceiver.receiveHandlingReport(command);
     }
 }

@@ -19,8 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class HandlingConvertor {
 
-
-    public HandlingReportReceiveCommand toReport(HandlingReportDto report) {
+    public HandlingReportReceiveCommand toCommand(HandlingReportDto report) {
         final Instant completionTime = report.getCompletionTime().toInstant(ZoneOffset.UTC);
         final VoyageNumber voyageNumber = Optional.ofNullable(report.getVoyageNumber()).map(VoyageNumber::of).orElse(null);
         final HandlingEvent.Type type = HandlingEvent.Type.valueOf(report.getType());
