@@ -46,8 +46,8 @@ class DefaultBookingServiceTest {
         var trackingId = TrackingId.of("001");
         var command = CargoRegisterCommand.builder()
             .arrivalDeadline(Instant.now())
-            .destination(UnLocode.of(SampleLocations.STOCKHOLM.getUnlocode()))
-            .origin(UnLocode.of(SampleLocations.SHANGHAI.getUnlocode()))
+            .destination(UnLocode.of(SampleLocations.STOCKHOLM.getUnlocode().getCode()))
+            .origin(UnLocode.of(SampleLocations.SHANGHAI.getUnlocode().getCode()))
             .build();
 
         given(locationFinder.require(command.getOrigin())).willReturn(SampleLocations.STOCKHOLM);
@@ -89,7 +89,7 @@ class DefaultBookingServiceTest {
         var cargo = mock(Cargo.class);
         var trackingId = TrackingId.of("001");
         var command = CargoDestinationChangeCommand.builder()
-            .destination(UnLocode.of(changeLocation.getUnlocode()))
+            .destination(UnLocode.of(changeLocation.getUnlocode().getCode()))
             .build();
 
         given(cargoFinder.require(trackingId)).willReturn(cargo);

@@ -29,14 +29,14 @@ class CargoConvertorTest {
     void toCargoRegisterCommand() {
         var request = new CargoRegisterRequest()
             .setArrivalDeadline(LocalDate.now().plusDays(1))
-            .setOriginUnlocode(SampleLocations.HAMBURG.getUnlocode())
-            .setDestinationUnlocode(SampleLocations.STOCKHOLM.getUnlocode());
+            .setOriginUnlocode(SampleLocations.HAMBURG.getUnlocode().getCode())
+            .setDestinationUnlocode(SampleLocations.STOCKHOLM.getUnlocode().getCode());
         var command = cargoConvertor.toCommand(request);
 
         Assertions.assertNotNull(command);
         Assertions.assertEquals(LocalDate.now().plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC) , command.getArrivalDeadline());
-        Assertions.assertEquals(SampleLocations.HAMBURG.getUnlocode(), command.getOrigin().getCode());
-        Assertions.assertEquals(SampleLocations.STOCKHOLM.getUnlocode(), command.getDestination().getCode());
+        Assertions.assertEquals(SampleLocations.HAMBURG.getUnlocode(), command.getOrigin());
+        Assertions.assertEquals(SampleLocations.STOCKHOLM.getUnlocode(), command.getDestination());
     }
 
 }
