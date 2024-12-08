@@ -1,11 +1,8 @@
 package se.citerus.dddsample.interfaces.model.convertor;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import se.citerus.dddsample.domain.model.location.LocationFinder;
@@ -38,8 +35,8 @@ class CargoConvertorTest {
 
         Assertions.assertNotNull(command);
         Assertions.assertEquals(LocalDate.now().plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC) , command.getArrivalDeadline());
-        Assertions.assertEquals(SampleLocations.HAMBURG.getUnlocode(), command.getOrigin().idString());
-        Assertions.assertEquals(SampleLocations.STOCKHOLM.getUnlocode(), command.getDestination().idString());
+        Assertions.assertEquals(SampleLocations.HAMBURG.getUnlocode(), command.getOrigin().getCode());
+        Assertions.assertEquals(SampleLocations.STOCKHOLM.getUnlocode(), command.getDestination().getCode());
     }
 
 }

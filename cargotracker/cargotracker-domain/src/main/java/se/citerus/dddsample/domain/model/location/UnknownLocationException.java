@@ -10,6 +10,6 @@ public class UnknownLocationException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return "No location with UN locode " + unlocode.idString() + " exists in the system";
+        return "No location with UN locode " + unlocode.getCode() + " exists in the system";
     }
 }

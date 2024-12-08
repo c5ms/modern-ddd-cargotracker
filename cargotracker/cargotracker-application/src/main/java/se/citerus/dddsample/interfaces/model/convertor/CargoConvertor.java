@@ -6,7 +6,6 @@ import se.citerus.dddsample.application.command.CargoAssignRouteCommand;
 import se.citerus.dddsample.application.command.CargoDestinationChangeCommand;
 import se.citerus.dddsample.application.command.CargoRegisterCommand;
 import se.citerus.dddsample.domain.model.cargo.Cargo;
-import se.citerus.dddsample.domain.model.cargo.Delivery;
 import se.citerus.dddsample.domain.model.cargo.Itinerary;
 import se.citerus.dddsample.domain.model.cargo.Leg;
 import se.citerus.dddsample.domain.model.location.Location;
@@ -16,8 +15,6 @@ import se.citerus.dddsample.domain.model.voyage.Voyage;
 import se.citerus.dddsample.domain.model.voyage.VoyageFinder;
 import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 import se.citerus.dddsample.interfaces.model.dto.CargoDto;
-import se.citerus.dddsample.interfaces.model.dto.DeliveryDto;
-import se.citerus.dddsample.interfaces.model.dto.LegDto;
 import se.citerus.dddsample.interfaces.model.dto.LocationDto;
 import se.citerus.dddsample.interfaces.model.request.CargoAssignRouteRequest;
 import se.citerus.dddsample.interfaces.model.request.CargoDestinationChangeRequest;
@@ -66,15 +63,15 @@ public class CargoConvertor {
     public CargoDto toDto(Cargo cargo) {
         return new CargoDto()
             .setTrackingId(cargo.getTrackingId().getId())
-            .setOrigin(cargo.getRouteSpecification().getOrigin().getUnlocode())
-            .setDestination(cargo.getRouteSpecification().getDestination().getUnlocode())
+            .setOrigin(cargo.getRouteSpecification().getOrigin().getUnlocode().getCode())
+            .setDestination(cargo.getRouteSpecification().getDestination().getUnlocode().getCode())
             .setArrivalDeadline(cargo.getRouteSpecification().getArrivalDeadline())
             ;
     }
 
     public LocationDto toDto(Location origin) {
         return new LocationDto()
-            .setUnlocode(origin.getUnlocode())
+            .setUnlocode(origin.getUnlocode().getCode())
             .setName(origin.getName());
     }
 

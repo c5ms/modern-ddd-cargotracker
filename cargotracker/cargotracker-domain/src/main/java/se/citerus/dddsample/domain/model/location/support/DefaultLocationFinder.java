@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import se.citerus.dddsample.domain.model.location.*;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -23,7 +22,7 @@ public class DefaultLocationFinder implements LocationFinder {
 
     @Override
     public Optional<Location> find(UnLocode unLocode) {
-        return locationRepository.findByUnlocode(unLocode.idString());
+        return locationRepository.findByUnlocode(unLocode.getCode());
     }
 
     @Override

@@ -3,9 +3,7 @@ package se.citerus.dddsample.domain.model.cargo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 import se.citerus.dddsample.domain.shared.ValueObject;
 
 /**
@@ -14,11 +12,12 @@ import se.citerus.dddsample.domain.shared.ValueObject;
 @Getter
 @Embeddable
 @EqualsAndHashCode
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public final class TrackingId implements ValueObject<TrackingId> {
 
     @Column(name = "tracking_id", unique = true, updatable = false)
     @NotEmpty(message = "Tracking ID cannot be empty.")
-    private final String id;
+    private String id;
 
     private TrackingId(@NonNull String id) {
         this.id = id;

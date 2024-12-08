@@ -26,16 +26,11 @@ public class Location implements DomainEntity<Location> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, unique = true, updatable = false)
-    private String unlocode;
+    @Embedded
+    private UnLocode unlocode;
 
     @Column(nullable = false)
     private String name;
-
-    private Location(String unlocode, String name) {
-        this.unlocode = unlocode;
-        this.name = name;
-    }
 
     /**
      * Package-level constructor, visible for test and sample data purposes.
@@ -48,30 +43,21 @@ public class Location implements DomainEntity<Location> {
         Validate.notNull(unLocode, "unLocode can not be null");
         Validate.notNull(name, "name can not be null");
 
-        this.unlocode = unLocode.idString();
+        this.unlocode = unLocode;
         this.name = name;
+    }
+
+    private Location(String unlocode, String name) {
+        this(UnLocode.of(unlocode), name);
+    }
+
+
+    public static Location of(final String unLocode, final String name) {
+        return new Location(unLocode, name);
     }
 
     public static Location of(final UnLocode unLocode, final String name) {
         return new Location(unLocode, name);
-    }
-
-    /**
-     * @param object to compare
-     * @return Since this is an entiy this will be true iff UN locodes are equal.
-     */
-    @Override
-    public boolean equals(final Object object) {
-        if (object == null) {
-            return false;
-        }
-        if (this == object) {
-            return true;
-        }
-        if (!(object instanceof Location other)) {
-            return false;
-        }
-        return sameIdentityAs(other);
     }
 
     @Override
@@ -80,19 +66,6 @@ public class Location implements DomainEntity<Location> {
             return false;
         }
         return this.unlocode.equals(other.unlocode);
-    }
-
-    /**
-     * @return Hash code of UN locode.
-     */
-    @Override
-    public int hashCode() {
-        return unlocode.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return name + " [" + unlocode + "]";
     }
 
 }

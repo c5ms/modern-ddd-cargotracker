@@ -83,36 +83,4 @@ public class Voyage implements DomainEntity<Voyage> {
         return "Voyage " + voyageNumber;
     }
 
-
-    /**
-     * Builder pattern is used for incremental construction
-     * of a Voyage aggregate. This serves as an aggregate factory.
-     */
-    public static final class Builder {
-
-        private final List<CarrierMovement> carrierMovements = new ArrayList<>();
-        private final VoyageNumber voyageNumber;
-        private Location departureLocation;
-
-        public Builder(final VoyageNumber voyageNumber, final Location departureLocation) {
-            Validate.notNull(voyageNumber, "Voyage number is required");
-            Validate.notNull(departureLocation, "Departure location is required");
-
-            this.voyageNumber = voyageNumber;
-            this.departureLocation = departureLocation;
-        }
-
-        public Builder addMovement(Location arrivalLocation, Instant departureTime, Instant arrivalTime) {
-            carrierMovements.add(CarrierMovement.of(departureLocation, arrivalLocation, departureTime, arrivalTime));
-            // Next departure location is the same as this arrival location
-            this.departureLocation = arrivalLocation;
-            return this;
-        }
-
-        public Voyage build() {
-            return new Voyage(voyageNumber, Schedule.of(carrierMovements));
-        }
-
-    }
-
 }

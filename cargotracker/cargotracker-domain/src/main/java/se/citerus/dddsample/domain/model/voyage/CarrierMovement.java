@@ -3,7 +3,6 @@ package se.citerus.dddsample.domain.model.voyage;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -27,9 +26,10 @@ public final class CarrierMovement implements ValueObject<CarrierMovement> {
     public static final CarrierMovement NONE = new CarrierMovement(
         Location.UNKNOWN,
         Location.UNKNOWN,
-        Instant.ofEpochMilli(0), 
+        Instant.ofEpochMilli(0),
         Instant.ofEpochMilli(0)
     );
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
@@ -57,9 +57,9 @@ public final class CarrierMovement implements ValueObject<CarrierMovement> {
      * @param arrivalTime       time of arrival
      */
     private CarrierMovement(Location departureLocation,
-                           Location arrivalLocation,
-                           Instant departureTime,
-                           Instant arrivalTime) {
+                            Location arrivalLocation,
+                            Instant departureTime,
+                            Instant arrivalTime) {
         //noinspection ObviousNullCheck
         Validate.noNullElements(new Object[]{departureLocation, arrivalLocation, departureTime, arrivalTime});
         this.departureTime = departureTime;

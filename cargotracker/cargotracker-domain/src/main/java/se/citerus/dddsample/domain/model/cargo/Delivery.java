@@ -239,7 +239,7 @@ public class Delivery implements ValueObject<Delivery> {
     }
 
     private RoutingStatus calculateRoutingStatus(Itinerary itinerary, RouteSpecification routeSpecification) {
-        if (itinerary == null) {
+        if (itinerary.isEmpty()) {
             return NOT_ROUTED;
         } else {
             if (routeSpecification.isSatisfiedBy(itinerary)) {

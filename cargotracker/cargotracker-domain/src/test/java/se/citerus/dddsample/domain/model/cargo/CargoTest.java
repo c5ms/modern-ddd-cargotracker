@@ -35,7 +35,7 @@ class CargoTest {
         assertEquals(0, cargo.getId());
         assertEquals(trackingId, cargo.getTrackingId());
         assertTrue(cargo.getItinerary().isEmpty());
-        assertEquals(RoutingStatus.MIS_ROUTED, cargo.getDelivery().getRoutingStatus());
+        assertEquals(RoutingStatus.NOT_ROUTED, cargo.getDelivery().getRoutingStatus());
         assertEquals(FIHEL, cargo.getRouteSpecification().getOrigin());
         assertEquals(CNSHA, cargo.getRouteSpecification().getDestination());
         assertEquals(arrivalDeadline, cargo.getRouteSpecification().getArrivalDeadline());
@@ -58,10 +58,10 @@ class CargoTest {
         var trackingId = TrackingId.of("001");
         var arrivalDeadline = Instant.now().plus(1, ChronoUnit.DAYS);
         var cargo = Cargo.of(trackingId, FIHEL, CNSHA, arrivalDeadline);
-        var legs = List.of(
+        var itinerary = Itinerary.of(List.of(
             Leg.of(Voyage.of(VoyageNumber.of("V0001"), Schedule.EMPTY), FIHEL, CNSHA, Instant.now(), Instant.now())
-        );
-        cargo.assignToRoute(Itinerary.of(legs));
-        assertEquals(  RoutingStatus.ROUTED,cargo.getDelivery().getRoutingStatus());
+        ));
+        cargo.assignToRoute(itinerary);
+        assertEquals(RoutingStatus.ROUTED, cargo.getDelivery().getRoutingStatus());
     }
 }
