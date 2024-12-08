@@ -11,24 +11,31 @@ import org.springdoc.core.utils.SpringDocUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import se.citerus.dddsample.infrastructure.configure.CargoTrackerInfrastructureProperties;
+import se.citerus.dddsample.infrastructure.configure.CargoTrackerJacksonProperties;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties({CargoTrackerInterfacesProperties.class})
+@EnableConfigurationProperties({CargoTrackerInterfacesProperties.class, CargoTrackerJacksonProperties.class })
 @RequiredArgsConstructor
-class CargoTrackerInterfacesConfigure {
+public class CargoTrackerInterfacesConfigure {
 
-    private final CargoTrackerInterfacesProperties cargoTrackerInterfacesProperties;
+    private final CargoTrackerInterfacesProperties properties;
+
+    public final static String yearMonthFormat = "yyyy-MM";
+    public final static String dateFormat = "yyyy-MM-dd";
+    public final static String timeFormat = "HH:mm:ss";
+    public final static String datetimeFormat = dateFormat + " " + timeFormat;
+    public final static TimeZone timeZone = TimeZone.getDefault();
 
     @Bean
-    public GroupedOpenApi restApi() {
+    GroupedOpenApi restApi() {
         return GroupedOpenApi.builder()
             .group("resource-api")
             .displayName("resource")
@@ -36,31 +43,31 @@ class CargoTrackerInterfacesConfigure {
             .build();
     }
 
+
     @Bean
-    public OpenAPI openAPI(CargoTrackerInfrastructureProperties infrastructureProperties) {
-        var jsonProperties = infrastructureProperties.getJson();
+    OpenAPI openAPI() {
 
         SpringDocUtils.getConfig().replaceWithSchema(LocalDate.class, new Schema<LocalDate>()
             .type("string")
-            .format(jsonProperties.getTimeFormat())
-            .example(LocalDate.of(2024, 1, 1).format(DateTimeFormatter.ofPattern(jsonProperties.getDateFormat()))));
+            .format(dateFormat)
+            .example(LocalDate.of(2024, 1, 1).format(DateTimeFormatter.ofPattern(dateFormat))));
 
         SpringDocUtils.getConfig().replaceWithSchema(LocalTime.class, new Schema<LocalTime>()
             .type("string")
-            .format(jsonProperties.getTimeFormat())
-            .example(LocalTime.of(20, 0, 0).format(DateTimeFormatter.ofPattern(jsonProperties.getTimeFormat()))));
+            .format(timeFormat)
+            .example(LocalTime.of(20, 0, 0).format(DateTimeFormatter.ofPattern(timeFormat))));
 
         SpringDocUtils.getConfig().replaceWithSchema(LocalDateTime.class, new Schema<LocalDateTime>()
             .type("string")
-            .format(jsonProperties.getTimeFormat())
-            .example(LocalDateTime.of(2024, 1, 1, 20, 0, 0).format(DateTimeFormatter.ofPattern(jsonProperties.getDatetimeFormat()))));
+            .format(datetimeFormat)
+            .example(LocalDateTime.of(2024, 1, 1, 20, 0, 0).format(DateTimeFormatter.ofPattern(datetimeFormat))));
 
         SpringDocUtils.getConfig().replaceWithSchema(YearMonth.class, new Schema<YearMonth>()
             .type("string")
-            .format(jsonProperties.getTimeFormat())
-            .example(YearMonth.of(2024, 1).format(DateTimeFormatter.ofPattern(jsonProperties.getYearMonthFormat()))));
+            .format(yearMonthFormat)
+            .example(YearMonth.of(2024, 1).format(DateTimeFormatter.ofPattern(yearMonthFormat))));
 
-        var openApiProperties = cargoTrackerInterfacesProperties.getOpenapi();
+        var openApiProperties = properties.getOpenapi();
 
         return new OpenAPI()
             .info(new Info()
@@ -77,5 +84,4 @@ class CargoTrackerInterfacesConfigure {
                     .url(openApiProperties.getLicense().getUrl()))
             );
     }
-
 }

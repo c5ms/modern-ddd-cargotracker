@@ -5,9 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
 @ConfigurationProperties(prefix = "cargotracker.interfaces")
-class CargoTrackerInterfacesProperties {
+public class CargoTrackerInterfacesProperties {
 
-    private ElevenOpenapiProperties openapi = new ElevenOpenapiProperties();
+    private final ElevenOpenapiProperties openapi = new ElevenOpenapiProperties();
 
     @Data
     public static class ElevenOpenapiProperties {

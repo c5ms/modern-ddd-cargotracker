@@ -3,9 +3,13 @@ package se.citerus.dddsample.domain.model.cargo;
 import org.junit.jupiter.api.Test;
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.model.location.UnLocode;
+import se.citerus.dddsample.domain.model.voyage.Schedule;
+import se.citerus.dddsample.domain.model.voyage.Voyage;
+import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,4 +53,15 @@ class CargoTest {
         assertEquals(newDestination, cargo.getRouteSpecification().getDestination());
     }
 
+    @Test
+    void assignToRoute() {
+        var trackingId = TrackingId.of("001");
+        var arrivalDeadline = Instant.now().plus(1, ChronoUnit.DAYS);
+        var cargo = Cargo.of(trackingId, FIHEL, CNSHA, arrivalDeadline);
+        var legs = List.of(
+            Leg.of(Voyage.of(VoyageNumber.of("V0001"), Schedule.EMPTY), FIHEL, CNSHA, Instant.now(), Instant.now())
+        );
+        cargo.assignToRoute(Itinerary.of(legs));
+        assertEquals(  RoutingStatus.ROUTED,cargo.getDelivery().getRoutingStatus());
+    }
 }

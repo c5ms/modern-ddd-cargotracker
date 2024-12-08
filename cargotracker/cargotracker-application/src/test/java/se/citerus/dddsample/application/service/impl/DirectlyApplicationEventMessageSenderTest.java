@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import se.citerus.dddsample.application.configure.CargoTrackerApplicationConfigure;
-import se.citerus.dddsample.application.utils.TestApplicationEvent;
-import se.citerus.dddsample.application.utils.TestEventListener;
 import se.citerus.dddsample.application.service.HandlingReportProcessor;
 import se.citerus.dddsample.application.shared.ApplicationEvent;
+import se.citerus.dddsample.application.utils.TestApplicationEvent;
+import se.citerus.dddsample.application.utils.TestEventListener;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.assertArg;

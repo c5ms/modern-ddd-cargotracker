@@ -8,13 +8,12 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import se.citerus.dddsample.application.command.HandlingReportProcessCommand;
 import se.citerus.dddsample.application.command.HandlingReportReceiveCommand;
 import se.citerus.dddsample.application.configure.CargoTrackerApplicationConfigure;
-import se.citerus.dddsample.application.service.HandlingReportReceiver;
 import se.citerus.dddsample.application.service.HandlingReportProcessor;
+import se.citerus.dddsample.application.service.HandlingReportReceiver;
 import se.citerus.dddsample.domain.model.handling.HandlingReport;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 

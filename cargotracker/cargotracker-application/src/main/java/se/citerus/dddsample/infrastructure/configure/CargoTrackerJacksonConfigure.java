@@ -21,37 +21,42 @@ import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilde
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import se.citerus.dddsample.interfaces.configure.CargoTrackerInterfacesConfigure;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties({CargoTrackerInfrastructureProperties.class})
+@EnableConfigurationProperties({CargoTrackerJacksonProperties.class})
 @RequiredArgsConstructor
-public class CargoTrackerInfrastructureConfigure {
+public class CargoTrackerJacksonConfigure {
 
-    private final CargoTrackerInfrastructureProperties properties;
+    private final static String yearMonthFormat = CargoTrackerInterfacesConfigure.yearMonthFormat;
+    private final static String dateFormat = CargoTrackerInterfacesConfigure.dateFormat;
+    private final static String timeFormat = CargoTrackerInterfacesConfigure.timeFormat;
+    private final static String datetimeFormat = CargoTrackerInterfacesConfigure.datetimeFormat;
+    private final static TimeZone timeZone = CargoTrackerInterfacesConfigure.timeZone;
 
     @Bean
     Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
-        var propertiesJson = properties.getJson();
 
         return builder -> builder
-            .serializerByType(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(propertiesJson.getDateFormat())))
-            .serializerByType(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(propertiesJson.getTimeFormat())))
-            .serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(propertiesJson.getDatetimeFormat())))
-            .serializerByType(YearMonth.class, new YearMonthSerializer(DateTimeFormatter.ofPattern(propertiesJson.getYearMonthFormat())))
+            .serializerByType(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(dateFormat)))
+            .serializerByType(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(timeFormat)))
+            .serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(datetimeFormat)))
+            .serializerByType(YearMonth.class, new YearMonthSerializer(DateTimeFormatter.ofPattern(yearMonthFormat)))
 
-            .deserializerByType(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(propertiesJson.getDateFormat())))
-            .deserializerByType(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(propertiesJson.getTimeFormat())))
-            .deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(propertiesJson.getDatetimeFormat())))
-            .deserializerByType(YearMonth.class, new YearMonthDeserializer(DateTimeFormatter.ofPattern(propertiesJson.getYearMonthFormat())))
+            .deserializerByType(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(dateFormat)))
+            .deserializerByType(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(timeFormat)))
+            .deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(datetimeFormat)))
+            .deserializerByType(YearMonth.class, new YearMonthDeserializer(DateTimeFormatter.ofPattern(yearMonthFormat)))
 
-            .timeZone(propertiesJson.getTimeZone())
+            .timeZone(timeZone)
             .featuresToDisable(
                 SerializationFeature.FAIL_ON_EMPTY_BEANS,
                 SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,

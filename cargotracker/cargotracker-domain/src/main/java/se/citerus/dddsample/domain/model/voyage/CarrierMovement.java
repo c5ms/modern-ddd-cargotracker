@@ -38,12 +38,12 @@ public final class CarrierMovement implements ValueObject<CarrierMovement> {
     @JoinColumn(name = "arrival_location_id", nullable = false)
     public Location arrivalLocation;
 
+    @Column(name = "arrival_time", nullable = false)
+    public Instant arrivalTime;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "departure_location_id", nullable = false)
     public Location departureLocation;
-
-    @Column(name = "arrival_time", nullable = false)
-    public Instant arrivalTime;
 
     @Column(name = "departure_time", nullable = false)
     public Instant departureTime;
