@@ -1,7 +1,6 @@
 package se.citerus.dddsample.application.configure;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -10,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import se.citerus.dddsample.application.service.HandlingReportProcessor;
-import se.citerus.dddsample.application.service.HandlingReportReceiver;
+import se.citerus.dddsample.application.service.HandlingReportHandler;
 import se.citerus.dddsample.application.service.impl.*;
 
 
@@ -21,26 +20,26 @@ public class CargoTrackerApplicationConfigure {
 
     @Bean
     @ConditionalOnProperty(prefix = "cargotracker.application", name = "handing-report.process-strategy", havingValue = "THREAD")
-    HandlingReportReceiver threadPooledHandlingReportReceiver(TaskExecutor taskExecutor, HandlingReportProcessor processor) {
-        return new ThreadPooledHandlingReportReceiver(taskExecutor, processor);
+    HandlingReportHandler threadPooledHandlingReportReceiver(TaskExecutor taskExecutor, HandlingReportProcessor processor) {
+        return new ThreadPooledHandlingReportHandler(taskExecutor, processor);
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "cargotracker.application", name = "handing-report.process-strategy", havingValue = "MESSAGE")
-    HandlingReportReceiver queuedHandlingReportReceiver(HandlingReportMessageSender sender) {
-        return new MessageHandlingReportReceiver(sender);
+    HandlingReportHandler queuedHandlingReportReceiver(HandlingReportMessageSender sender) {
+        return new MessageHandlingReportHandler(sender);
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "cargotracker.application", name = "handing-report.process-strategy", havingValue = "INTERNAL")
-    HandlingReportReceiver internalReportReceiver(HandlingReportProcessor handlingReportProcessor) {
-        return new InternalHandlingReportReceiver(handlingReportProcessor);
+    @ConditionalOnProperty(prefix = "cargotracker.application", name = "handing-report.process-strategy", havingValue = "DIRECT")
+    HandlingReportHandler internalReportReceiver(HandlingReportProcessor handlingReportProcessor) {
+        return new DirectlyHandlingReportHandler(handlingReportProcessor);
     }
 
     @Bean
     @ConditionalOnMissingBean(ApplicationEventMessageSender.class)
     ApplicationEventMessageSender applicationEventMessageSender(ApplicationEventPublisher publisher) {
-        return new InternalApplicationEventMessageSender(publisher);
+        return new DirectlyApplicationEventMessageSender(publisher);
     }
 
 }

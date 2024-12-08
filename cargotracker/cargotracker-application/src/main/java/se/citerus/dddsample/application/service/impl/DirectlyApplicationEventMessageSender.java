@@ -7,7 +7,7 @@ import se.citerus.dddsample.application.shared.ApplicationEvent;
 
 @Slf4j
 @RequiredArgsConstructor
-public class InternalApplicationEventMessageSender implements ApplicationEventMessageSender {
+public class DirectlyApplicationEventMessageSender implements ApplicationEventMessageSender {
 
     private final ApplicationEventPublisher publisher;
 

@@ -1,4 +1,4 @@
-package se.citerus.dddsample.application.event;
+package se.citerus.dddsample.application.utils;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

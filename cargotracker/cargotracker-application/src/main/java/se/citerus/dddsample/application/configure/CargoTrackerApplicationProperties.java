@@ -12,15 +12,12 @@ public class CargoTrackerApplicationProperties {
     public enum HandlingReportProcessStrategy {
         MESSAGE,
         THREAD,
-        /**
-         * for test
-         */
-        INTERNAL
+        DIRECT
     }
 
     @Data
     public static class HandlingReport {
-        private HandlingReportProcessStrategy processStrategy = HandlingReportProcessStrategy.INTERNAL;
+        private HandlingReportProcessStrategy processStrategy = HandlingReportProcessStrategy.DIRECT;
     }
 
 }

@@ -5,12 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import se.citerus.dddsample.application.command.HandlingReportProcessCommand;
 import se.citerus.dddsample.application.command.HandlingReportReceiveCommand;
 import se.citerus.dddsample.application.service.HandlingReportProcessor;
-import se.citerus.dddsample.application.service.HandlingReportReceiver;
+import se.citerus.dddsample.application.service.HandlingReportHandler;
 import se.citerus.dddsample.domain.model.handling.HandlingReport;
 
 @Slf4j
 @RequiredArgsConstructor
-public class InternalHandlingReportReceiver implements HandlingReportReceiver {
+public class DirectlyHandlingReportHandler implements HandlingReportHandler {
     private final HandlingReportProcessor handlingReportProcessor;
 
     @Override

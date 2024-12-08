@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import se.citerus.dddsample.application.configure.CargoTrackerApplicationConfigure;
-import se.citerus.dddsample.application.event.TestApplicationEvent;
-import se.citerus.dddsample.application.event.TestEventListener;
+import se.citerus.dddsample.application.utils.TestApplicationEvent;
+import se.citerus.dddsample.application.utils.TestEventListener;
 import se.citerus.dddsample.application.service.HandlingReportProcessor;
 import se.citerus.dddsample.application.shared.ApplicationEvent;
 
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.times;
     HandlingReportProcessor.class,
     CargoTrackerApplicationConfigure.class,
 })
-class InternalApplicationEventMessageSenderTest {
+class DirectlyApplicationEventMessageSenderTest {
 
     @Autowired
     ApplicationEventMessageSender applicationEventMessageSender;

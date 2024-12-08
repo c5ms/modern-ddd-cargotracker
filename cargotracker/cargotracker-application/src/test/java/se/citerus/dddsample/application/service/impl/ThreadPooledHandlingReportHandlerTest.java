@@ -12,16 +12,17 @@ import se.citerus.dddsample.application.command.HandlingReportProcessCommand;
 import se.citerus.dddsample.application.command.HandlingReportReceiveCommand;
 import se.citerus.dddsample.application.configure.CargoTrackerApplicationConfigure;
 import se.citerus.dddsample.application.service.HandlingReportProcessor;
-import se.citerus.dddsample.application.service.HandlingReportReceiver;
+import se.citerus.dddsample.application.service.HandlingReportHandler;
 import se.citerus.dddsample.domain.model.handling.HandlingReport;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.assertArg;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(
     classes = {
@@ -31,7 +32,7 @@ import static org.mockito.Mockito.times;
     properties = {
         "cargotracker.application.handing-report.process-strategy=THREAD",
     })
-class ThreadPooledHandlingReportReceiverTest {
+class ThreadPooledHandlingReportHandlerTest {
 
     @TestBean
     TaskExecutor taskExecutor;
@@ -40,7 +41,7 @@ class ThreadPooledHandlingReportReceiverTest {
     HandlingReportProcessor processor;
 
     @Autowired
-    HandlingReportReceiver handlingReportReceiver;
+    HandlingReportHandler handlingReportHandler;
 
     private static TaskExecutor taskExecutor() {
         return new SyncTaskExecutor();
@@ -54,7 +55,22 @@ class ThreadPooledHandlingReportReceiverTest {
             .reports(List.of(report1, report2))
             .build();
 
-        handlingReportReceiver.receiveHandlingReport(command);
+        handlingReportHandler.receiveHandlingReport(command);
+
+        then(processor).should(times(2)).processHandingEvent(Mockito.any(HandlingReportProcessCommand.class));
+    }
+
+
+    @Test
+    void receiveHandlingReport_with_process_error() {
+        var report1 = Mockito.mock(HandlingReport.class);
+        var report2 = Mockito.mock(HandlingReport.class);
+        var command = HandlingReportReceiveCommand.builder()
+            .reports(List.of(report1, report2))
+            .build();
+
+        doThrow(IllegalStateException.class).when(processor).processHandingEvent(any(HandlingReportProcessCommand.class));
+        handlingReportHandler.receiveHandlingReport(command);
 
         then(processor).should(times(2)).processHandingEvent(Mockito.any(HandlingReportProcessCommand.class));
     }

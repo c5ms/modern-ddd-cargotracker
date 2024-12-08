@@ -32,9 +32,9 @@ import java.time.format.DateTimeFormatter;
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties({CargoTrackerInfrastructureProperties.class})
 @RequiredArgsConstructor
-class CargoTrackerInfrastructureConfigure {
-    private final CargoTrackerInfrastructureProperties properties;
+public class CargoTrackerInfrastructureConfigure {
 
+    private final CargoTrackerInfrastructureProperties properties;
 
     @Bean
     Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {

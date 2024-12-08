@@ -1,4 +1,4 @@
-package se.citerus.dddsample.application.event;
+package se.citerus.dddsample.application.utils;
 
 import se.citerus.dddsample.application.shared.ApplicationEvent;
 
