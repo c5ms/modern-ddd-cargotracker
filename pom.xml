@@ -20,9 +20,8 @@
 
     <modules>
         <module>cargotracker</module>
+        <module>pathfinder</module>
     </modules>
-
-
 
     <properties>
         <java.version>17</java.version>

@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="run-cargotracker" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-    <module name="cargotracker-application" />
+    <module name="cargotracker" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="se.citerus.dddsample.Application" />
     <extension name="coverage">
       <pattern>
