@@ -12,10 +12,10 @@ The `modern-ddd-cargotracker` repository is a Java-based project that implements
 
 #### 2. Design Patterns and Architectural Principles
 - **Strategy Design Pattern**: Offers multiple strategies (ThreadPool, MessageQueue, Directly) for handling reports. Refer to [Strategy Design Pattern](https://java-design-patterns.com/patterns/strategy/).
-- **Behavior - Driven Development (BDD)**: Implements BDD testing at the application layer. See [BDD in Action](https://livebook.manning.com/book/bdd-in-action/chapter-10).
-- **Layer - Safety**: Each layer is designed to be delete-free. For example, you can safely delete the interface layer folder without causing security issues. Refer to [related article](http://www.javapractices.com/topic/TopicAction.do?Id=205).
+- **Behavior-Driven Development (BDD)**: Implements BDD testing at the application layer. See [BDD in Action](https://livebook.manning.com/book/bdd-in-action/chapter-10).
+- **Layer-Safety**: Each layer is designed to be delete-free. For example, you can safely delete the interface layer folder without causing security issues. Refer to [related article](http://www.javapractices.com/topic/TopicAction.do?Id=205).
 - **Domain Layer Isolation**: The domain layer is separated into a single JAR file to prevent accidental use of classes outside the domain layer.
-- **Command - Query Responsibility Segregation (CQRS)**: Separates write and read operations for better scalability and maintainability.
+- **Command-Query Responsibility Segregation (CQRS)**: Separates write and read operations for better scalability and maintainability.
 
 ### Running the Application
 

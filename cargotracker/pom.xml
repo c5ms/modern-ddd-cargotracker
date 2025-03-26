@@ -5,7 +5,7 @@
 
     <parent>
         <groupId>com.github.c5ms</groupId>
-        <artifactId>ddd-sample-cargotracker</artifactId>
+        <artifactId>modern-ddd-cargotracker</artifactId>
         <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
