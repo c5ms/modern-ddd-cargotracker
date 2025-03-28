@@ -13,7 +13,7 @@
     <artifactId>cargotracker</artifactId>
 
     <properties>
-        <app.main>se.citerus.dddsample.Application</app.main>
+        <app.main>com.github.c5ms.cargotracker.Application</app.main>
         <app.output>${project.basedir}/../target</app.output>
     </properties>
 
